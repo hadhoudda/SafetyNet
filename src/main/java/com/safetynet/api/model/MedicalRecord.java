@@ -1,9 +1,6 @@
 package com.safetynet.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.Setter;
-
 
 import java.util.List;
 
@@ -68,5 +65,16 @@ public class MedicalRecord {
 
     public void setAllergies(List<String> allergies) {
         this.allergies = allergies;
+    }
+
+    @Override
+    public String toString() {
+        return "MedicalRecord{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", birthdate='" + birthdate + '\'' +
+                ", medications=" + medications +
+                ", allergies=" + allergies +
+                '}';
     }
 }

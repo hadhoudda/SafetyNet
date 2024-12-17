@@ -2,7 +2,6 @@ package com.safetynet.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-
 public class Person {
 
     @JsonProperty("firstName")
@@ -38,6 +37,13 @@ public class Person {
         this.email = email;
     }
 
+    public Person(String firstName, String lastName, String address, String phone) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.phone = phone;
+    }
+    
     public String getFirstName() {
         return firstName;
     }
@@ -92,5 +98,18 @@ public class Person {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", address='" + address + '\'' +
+                ", city='" + city + '\'' +
+                ", zip='" + zip + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }
