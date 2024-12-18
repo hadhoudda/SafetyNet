@@ -1,22 +1,20 @@
 package com.safetynet.api.dto;
 
-import com.safetynet.api.model.Person;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class PersonListByFireStationWithCountDto {
 
-    private List<PersonSimplified> persons = new ArrayList<>();
+    private List<PersonSimplifiedDto> persons = new ArrayList<>();
     private int adultCount;
     private int childCount;
 
 
-    public List<PersonSimplified> getPersons() {
+    public List<PersonSimplifiedDto> getPersons() {
         return persons;
     }
 
-    public void setPersons(List<PersonSimplified> persons) {
+    public void setPersons(List<PersonSimplifiedDto> persons) {
         this.persons = persons;
     }
 

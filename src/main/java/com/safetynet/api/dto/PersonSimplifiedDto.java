@@ -1,12 +1,12 @@
 package com.safetynet.api.dto;
 
-public class PersonSimplified {
+public class PersonSimplifiedDto {
     private String firstName;
     private String lastName;
     private String address;
     private String phone;
 
-    public PersonSimplified(String firstName, String lastName, String address, String phone) {
+    public PersonSimplifiedDto(String firstName, String lastName, String address, String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
