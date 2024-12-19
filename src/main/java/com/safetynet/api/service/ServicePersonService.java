@@ -2,10 +2,7 @@ package com.safetynet.api.service;
 
 import com.safetynet.api.constants.Path;
 import com.safetynet.api.container.DataJsonContainer;
-import com.safetynet.api.dto.ChildAlertDto;
-import com.safetynet.api.dto.PersonAndMedicalRecordDto;
-import com.safetynet.api.dto.PersonListByFireStationWithCountDto;
-import com.safetynet.api.dto.PersonSimplifiedDto;
+import com.safetynet.api.dto.*;
 import com.safetynet.api.model.FireStation;
 import com.safetynet.api.model.MedicalRecord;
 import com.safetynet.api.model.Person;
@@ -17,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ServicePersonService implements IServicePersonService {
@@ -151,6 +149,105 @@ public class ServicePersonService implements IServicePersonService {
     }
 
 
+
+//////////////////////// afffffffff
+
+    @Override
+    public Map<String, List<PersonAndMedicalRecordDto>> findAllPersonGroupedByAddress(String station) {
+        try {
+            dataJsonContainer = dataJsonService.readFileJson(Path.FILE_PATH);
+            List<Person> personList = dataJsonContainer.getPersonsList();
+            List<FireStation> fireStationList = dataJsonContainer.getFireStationList();
+            List<MedicalRecord> medicalRecordList = dataJsonContainer.getMedicalRecordList();
+            List<PersonAndMedicalRecordDto> listPersonAndMedicalrecord = new ArrayList<>();
+            Map<String, List<PersonAndMedicalRecordDto>> listMap ;
+
+            //obtenir les adresses correspondant le numero de station indique
+            List<String> address = fireStationList.stream().filter(fireStation -> station.equals(fireStation.getStation()))
+                    .map(FireStation::getAddress).toList();
+            System.out.println(address);
+            //filtre les persons selon l'adress
+            personList = personList.stream().filter(person -> address.contains(person.getAddress())).toList();
+
+            for (Person person : personList) {
+                for (MedicalRecord medicalRecord : medicalRecordList) {
+                    if (person.getFirstName().equals(medicalRecord.getFirstName()) &&
+                            person.getLastName().equals(medicalRecord.getLastName())) {
+                        int age = personService.calculAgePerson(medicalRecord.getBirthdate());
+                        listPersonAndMedicalrecord.add(new PersonAndMedicalRecordDto(
+                                person.getFirstName(),
+                                person.getLastName(),
+                                person.getPhone(),
+                                age,
+                                medicalRecord.getMedications(),
+                                medicalRecord.getAllergies()
+                        ));
+                        for (PersonAndMedicalRecordDto perssonAndMedical : listPersonAndMedicalrecord) {
+                            perssonAndMedical.setCity(person.getCity());
+                        }
+
+                    }
+                }
+
+            }
+            //regoupe les persons selon l'adresse
+             listMap = listPersonAndMedicalrecord.stream()
+                    .collect(Collectors.groupingBy(PersonAndMedicalRecordDto::getCity));
+
+           //affiche
+            listMap.forEach((city, persons) -> {
+                System.out.println("City: " + city);
+                persons.forEach(System.out::println);
+            });
+
+            return listMap;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    ///////////////////////////////
+
+
+    @Override
+    public List<PersonInfos> findAllPersonInfos(String lastName) {
+        try {
+            dataJsonContainer = dataJsonService.readFileJson(Path.FILE_PATH);
+            List<Person> personList = dataJsonContainer.getPersonsList();
+            List<MedicalRecord> medicalRecordList = dataJsonContainer.getMedicalRecordList();
+            List<PersonInfos> personInfosList = new ArrayList<>();
+
+            //filtre list persion selon nom
+            personList = personList.stream().filter(person -> lastName.equals(person.getLastName())).toList();
+
+            System.out.println( personList);
+            System.out.println(medicalRecordList);
+            for(Person person: personList){
+                for (MedicalRecord medicalRecord: medicalRecordList){
+                    if (person.getLastName().equals(medicalRecord.getLastName())
+                        && person.getFirstName().equals(medicalRecord.getFirstName())){
+                        int age = personService.calculAgePerson(medicalRecord.getBirthdate());
+                            personInfosList.add(new PersonInfos(
+                                    lastName,
+                                    person.getFirstName(),
+                                    person.getAddress(),
+                                    age,
+                                    person.getEmail(),
+                                    medicalRecord.getMedications(),
+                                    medicalRecord.getAllergies()
+                            ));
+                    }
+                }
+            }
+
+            System.out.println(personInfosList);
+
+            return personInfosList;
+        } catch (RuntimeException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     public List<String> findAllListMailPersonByCity(String city) {

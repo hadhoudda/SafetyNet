@@ -1,27 +1,27 @@
 package com.safetynet.api.controller;
 
+
+import com.safetynet.api.dto.PersonAndMedicalRecordDto;
 import com.safetynet.api.service.ServicePersonService;
 import com.safetynet.api.service.contracts.IServicePersonService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
-public class CommunityEmail {
+public class PersonGroupedByAddressController {
 
     IServicePersonService iServicePersonService = new ServicePersonService();
+    @GetMapping(value = "/flood/stations")
+    public ResponseEntity<Map<String, List<PersonAndMedicalRecordDto>>> getAllPersonGroupedByAddress(String stations){
+        Map<String, List<PersonAndMedicalRecordDto>> listPersons = iServicePersonService.findAllPersonGroupedByAddress(stations);
 
-    //7- retourner les adresses mail de tous les habitants de la ville
-    @GetMapping(value = "/communityEmail")
-    public ResponseEntity<List<String>>  getListMailPersonByCity(@RequestParam String city) {
-        List<String> listEmail = iServicePersonService.findAllListMailPersonByCity(city);
-
-        if(!listEmail.isEmpty()){
-            return  new ResponseEntity<>(listEmail, HttpStatus.OK);
+        if (!listPersons.isEmpty()){
+            return new ResponseEntity<>(listPersons, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

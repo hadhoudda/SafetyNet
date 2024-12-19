@@ -1,36 +1,25 @@
 package com.safetynet.api.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
-public class PersonAndMedicalRecordDto {
+public class PersonInfos {
     private String firstName;
     private String lastName;
-    private String phone;
-    private String city;
+    private String address;
     private int age;
+    private String email;
     private List<String> medications;
     private List<String> allergies;
 
-    public PersonAndMedicalRecordDto() {
+    public PersonInfos() {
     }
 
-    public PersonAndMedicalRecordDto(String firstName, String lastName, String phone, int age, List<String> medications, List<String> allergies) {
+    public PersonInfos(String firstName, String lastName, String address, int age, String email, List<String> medications, List<String> allergies) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.phone = phone;
+        this.address = address;
         this.age = age;
-        this.medications = medications;
-        this.allergies = allergies;
-    }
-
-    public PersonAndMedicalRecordDto(String firstName, String lastName, String phone, String city, int age, List<String> medications, List<String> allergies) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phone = phone;
-        this.city = city;
-        this.age = age;
+        this.email = email;
         this.medications = medications;
         this.allergies = allergies;
     }
@@ -51,20 +40,12 @@ public class PersonAndMedicalRecordDto {
         this.lastName = lastName;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getAddress() {
+        return address;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getCity() {
-        return city;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public int getAge() {
@@ -73,6 +54,14 @@ public class PersonAndMedicalRecordDto {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public List<String> getMedications() {
@@ -93,11 +82,12 @@ public class PersonAndMedicalRecordDto {
 
     @Override
     public String toString() {
-        return "PersonAndMedicalRecordDto{" +
+        return "PersonInfos{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
                 ", age=" + age +
+                ", email='" + email + '\'' +
                 ", medications=" + medications +
                 ", allergies=" + allergies +
                 '}';

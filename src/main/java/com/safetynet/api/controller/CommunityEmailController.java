@@ -11,20 +11,20 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class PhoneAlertByFireStation {
+public class CommunityEmailController {
 
     IServicePersonService iServicePersonService = new ServicePersonService();
 
-    // 3- retourner une liste des numeros de telephone des persons couvertes par la caserne de pompiers correspondante
-    @GetMapping(value = "/phoneAlert")
-    public ResponseEntity<List<String>> getListPhonePersonByFireStation(@RequestParam String firestation) {
+    //7- retourner les adresses mail de tous les habitants de la ville
+    @GetMapping(value = "/communityEmail")
+    public ResponseEntity<List<String>>  getListMailPersonByCity(@RequestParam String city) {
+        List<String> listEmail = iServicePersonService.findAllListMailPersonByCity(city);
 
-        List<String> listPhone = iServicePersonService.findAllListPhonePersonByFireStation(firestation);
-
-        if (!listPhone.isEmpty()) {
-            return new ResponseEntity<>(listPhone, HttpStatus.OK);
+        if(!listEmail.isEmpty()){
+            return  new ResponseEntity<>(listEmail, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
 }

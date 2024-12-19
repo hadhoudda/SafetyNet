@@ -2,6 +2,7 @@ package com.safetynet.api.service.contracts;
 
 import com.safetynet.api.dto.ChildAlertDto;
 import com.safetynet.api.dto.PersonAndMedicalRecordDto;
+import com.safetynet.api.dto.PersonInfos;
 import com.safetynet.api.dto.PersonListByFireStationWithCountDto;
 import com.safetynet.api.model.Person;
 
@@ -17,5 +18,7 @@ public interface IServicePersonService {
     List<String> findAllListPhonePersonByFireStation(String firestation);
     Map<List<ChildAlertDto>, List<Person>> findAllChildByAdress(String adress);
     List<PersonAndMedicalRecordDto> findAllPersonAndMedicalByAdress(String adress);
+    Map<String, List<PersonAndMedicalRecordDto>> findAllPersonGroupedByAddress(String station);
+    List<PersonInfos> findAllPersonInfos(String lastName);
 
 }
