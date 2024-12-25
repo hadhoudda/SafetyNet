@@ -1,7 +1,7 @@
 package com.safetynet.api.controller;
 
-import com.safetynet.api.service.ServicePersonService;
-import com.safetynet.api.service.contracts.IServicePersonService;
+import com.safetynet.api.service.PersonInfoService;
+import com.safetynet.api.service.contracts.IPersonInfoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,13 +13,13 @@ import java.util.List;
 @RestController
 public class PhoneAlertByFireStationController {
 
-    IServicePersonService iServicePersonService = new ServicePersonService();
+    IPersonInfoService iPersonInfoService = new PersonInfoService();
 
     // 3- retourner une liste des numeros de telephone des persons couvertes par la caserne de pompiers correspondante
     @GetMapping(value = "/phoneAlert")
     public ResponseEntity<List<String>> getListPhonePersonByFireStation(@RequestParam String firestation) {
 
-        List<String> listPhone = iServicePersonService.findAllListPhonePersonByFireStation(firestation);
+        List<String> listPhone = iPersonInfoService.findAllListPhonePersonByFireStation(firestation);
 
         if (!listPhone.isEmpty()) {
             return new ResponseEntity<>(listPhone, HttpStatus.OK);

@@ -1,7 +1,7 @@
 package com.safetynet.api.controller;
 
-import com.safetynet.api.service.ServicePersonService;
-import com.safetynet.api.service.contracts.IServicePersonService;
+import com.safetynet.api.service.PersonInfoService;
+import com.safetynet.api.service.contracts.IPersonInfoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,12 +13,12 @@ import java.util.List;
 @RestController
 public class CommunityEmailController {
 
-    IServicePersonService iServicePersonService = new ServicePersonService();
+    IPersonInfoService iPersonInfoService = new PersonInfoService();
 
     //7- retourner les adresses mail de tous les habitants de la ville
     @GetMapping(value = "/communityEmail")
     public ResponseEntity<List<String>>  getListMailPersonByCity(@RequestParam String city) {
-        List<String> listEmail = iServicePersonService.findAllListMailPersonByCity(city);
+        List<String> listEmail = iPersonInfoService.findAllListMailPersonByCity(city);
 
         if(!listEmail.isEmpty()){
             return  new ResponseEntity<>(listEmail, HttpStatus.OK);

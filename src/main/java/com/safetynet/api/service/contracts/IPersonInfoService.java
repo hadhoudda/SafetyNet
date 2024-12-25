@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public interface IServicePersonService {
+public interface IPersonInfoService {
 
     List<Person> filtrePersonByFirestation(String firestation);
     PersonListByFireStationWithCountDto findAllPersonListByFireStationWithCount(String stationNumber) throws IOException;

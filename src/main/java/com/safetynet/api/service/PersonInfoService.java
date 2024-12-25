@@ -6,7 +6,10 @@ import com.safetynet.api.dto.*;
 import com.safetynet.api.model.FireStation;
 import com.safetynet.api.model.MedicalRecord;
 import com.safetynet.api.model.Person;
-import com.safetynet.api.service.contracts.IServicePersonService;
+import com.safetynet.api.service.contracts.IDataJsonService;
+import com.safetynet.api.service.contracts.IPersonInfoService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -17,11 +20,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class ServicePersonService implements IServicePersonService {
+public class PersonInfoService implements IPersonInfoService {
 
-    DataJsonService dataJsonService = new DataJsonService();
+    IDataJsonService dataJsonService = new DataJsonService();
     DataJsonContainer dataJsonContainer = new DataJsonContainer();
-    PersonService personService = new PersonService();
+    PersonAgeService personAgeService = new PersonAgeService();
 
     //methode filtre person selon numero de station
     @Override
@@ -37,13 +40,11 @@ public class ServicePersonService implements IServicePersonService {
             List<Person> filteredPersons = dataJsonContainer.getPersonsList().stream()
                     .filter(person -> addresses.contains(person.getAddress()))  // Vérifier si l'adresse de la personne est dans la liste
                     .toList();
-
             return filteredPersons;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-
 
     @Override
     public PersonListByFireStationWithCountDto findAllPersonListByFireStationWithCount(String stationNumber) throws IOException{
@@ -58,12 +59,10 @@ public class ServicePersonService implements IServicePersonService {
                     .toList();
             personListByFireStationWithCountDto.setPersons(simplifiedPersons);
 
-            personListByFireStationWithCountDto.setAdultCount(personService.calculAdulPerson(filteredPersons));
-            personListByFireStationWithCountDto.setChildCount(personService.calculChildPerson(filteredPersons));
+            personListByFireStationWithCountDto.setAdultCount(personAgeService.calculAdulPerson(filteredPersons));
+            personListByFireStationWithCountDto.setChildCount(personAgeService.calculChildPerson(filteredPersons));
             return personListByFireStationWithCountDto;
-
     }
-
 
     @Override
     public List<String> findAllListPhonePersonByFireStation(String firestation) {
@@ -86,7 +85,7 @@ public class ServicePersonService implements IServicePersonService {
             for (Person person : personList) {
                 for (MedicalRecord medicalRecord : medicalRecordList) {
                     if (medicalRecord.getFirstName().equals(person.getFirstName()) && medicalRecord.getLastName().equals(person.getLastName())) {
-                        int age = personService.calculAgePerson(medicalRecord.getBirthdate());
+                        int age = personAgeService.calculAgePerson(medicalRecord.getBirthdate());
                         if (age <= 18 && person.getAddress().equals(address)) {
                             childrenList.add(new ChildAlertDto(person.getFirstName(), person.getLastName(), age));
 
@@ -94,7 +93,6 @@ public class ServicePersonService implements IServicePersonService {
                     }
                 }
             }
-
             if (childrenList.isEmpty()) {
                 personList.removeAll(personList);
             }
@@ -106,15 +104,12 @@ public class ServicePersonService implements IServicePersonService {
             }
 
             list.put(childrenList, personList);
-
             System.out.println(childrenList);
             return list;
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-
 
     @Override
     public List<PersonAndMedicalRecordDto> findAllPersonAndMedicalByAdress(String adress) {
@@ -123,14 +118,12 @@ public class ServicePersonService implements IServicePersonService {
             List<Person> personList = dataJsonContainer.getPersonsList();
             List<MedicalRecord> medicalRecordList = dataJsonContainer.getMedicalRecordList();
             List<PersonAndMedicalRecordDto> personMedicalRecordMap = new ArrayList<>();
-
             personList = personList.stream().filter(person -> adress.equals(person.getAddress())).toList();
             System.out.println(personList);
-
             for (Person person : personList) {
                 for (MedicalRecord medicalRecord : medicalRecordList) {
                     if (person.getLastName().equals(medicalRecord.getLastName()) && person.getFirstName().equals(medicalRecord.getFirstName())) {
-                        int age = personService.calculAgePerson(medicalRecord.getBirthdate());
+                        int age = personAgeService.calculAgePerson(medicalRecord.getBirthdate());
                         personMedicalRecordMap.add(new PersonAndMedicalRecordDto(
                                 person.getFirstName(),
                                 person.getLastName(),
@@ -145,10 +138,7 @@ public class ServicePersonService implements IServicePersonService {
         } catch (RuntimeException | IOException e) {
             throw new RuntimeException(e);
         }
-
     }
-
-
 
 //////////////////////// afffffffff
 
@@ -161,7 +151,6 @@ public class ServicePersonService implements IServicePersonService {
             List<MedicalRecord> medicalRecordList = dataJsonContainer.getMedicalRecordList();
             List<PersonAndMedicalRecordDto> listPersonAndMedicalrecord = new ArrayList<>();
             Map<String, List<PersonAndMedicalRecordDto>> listMap ;
-
             //obtenir les adresses correspondant le numero de station indique
             List<String> address = fireStationList.stream().filter(fireStation -> station.equals(fireStation.getStation()))
                     .map(FireStation::getAddress).toList();
@@ -173,7 +162,7 @@ public class ServicePersonService implements IServicePersonService {
                 for (MedicalRecord medicalRecord : medicalRecordList) {
                     if (person.getFirstName().equals(medicalRecord.getFirstName()) &&
                             person.getLastName().equals(medicalRecord.getLastName())) {
-                        int age = personService.calculAgePerson(medicalRecord.getBirthdate());
+                        int age = personAgeService.calculAgePerson(medicalRecord.getBirthdate());
                         listPersonAndMedicalrecord.add(new PersonAndMedicalRecordDto(
                                 person.getFirstName(),
                                 person.getLastName(),
@@ -185,15 +174,12 @@ public class ServicePersonService implements IServicePersonService {
                         for (PersonAndMedicalRecordDto perssonAndMedical : listPersonAndMedicalrecord) {
                             perssonAndMedical.setCity(person.getCity());
                         }
-
                     }
                 }
-
             }
             //regoupe les persons selon l'adresse
              listMap = listPersonAndMedicalrecord.stream()
                     .collect(Collectors.groupingBy(PersonAndMedicalRecordDto::getCity));
-
            //affiche
             listMap.forEach((city, persons) -> {
                 System.out.println("City: " + city);
@@ -227,7 +213,7 @@ public class ServicePersonService implements IServicePersonService {
                 for (MedicalRecord medicalRecord: medicalRecordList){
                     if (person.getLastName().equals(medicalRecord.getLastName())
                         && person.getFirstName().equals(medicalRecord.getFirstName())){
-                        int age = personService.calculAgePerson(medicalRecord.getBirthdate());
+                        int age = personAgeService.calculAgePerson(medicalRecord.getBirthdate());
                             personInfosList.add(new PersonInfos(
                                     lastName,
                                     person.getFirstName(),
@@ -240,7 +226,6 @@ public class ServicePersonService implements IServicePersonService {
                     }
                 }
             }
-
             System.out.println(personInfosList);
 
             return personInfosList;
@@ -255,7 +240,6 @@ public class ServicePersonService implements IServicePersonService {
             dataJsonContainer = dataJsonService.readFileJson(Path.FILE_PATH);
             List<String> listMail = dataJsonContainer.getPersonsList().stream()
                     .filter(person -> city.equals(person.getCity())).map(Person::getEmail).toList();
-
 
             return listMail;
         } catch (IOException e) {

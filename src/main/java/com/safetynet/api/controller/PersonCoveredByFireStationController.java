@@ -1,8 +1,8 @@
 package com.safetynet.api.controller;
 
 import com.safetynet.api.dto.PersonListByFireStationWithCountDto;
-import com.safetynet.api.service.ServicePersonService;
-import com.safetynet.api.service.contracts.IServicePersonService;
+import com.safetynet.api.service.PersonInfoService;
+import com.safetynet.api.service.contracts.IPersonInfoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,12 +14,12 @@ import java.io.IOException;
 @RestController
 public class PersonCoveredByFireStationController {
 
-    IServicePersonService iServicePersonService = new ServicePersonService();
+    IPersonInfoService iPersonInfoService = new PersonInfoService();
 
     // 1- retourner une liste des personnes couvertes par la caserne de pompiers correspondante
     @GetMapping(value = "/firestation")
     public ResponseEntity<PersonListByFireStationWithCountDto> getPersonListByFireStationWithCount(@RequestParam String stationNumber) throws IOException {
-        PersonListByFireStationWithCountDto personList = iServicePersonService.findAllPersonListByFireStationWithCount(stationNumber);
+        PersonListByFireStationWithCountDto personList = iPersonInfoService.findAllPersonListByFireStationWithCount(stationNumber);
 
         if (personList != null) {
             return new ResponseEntity<>(personList, HttpStatus.OK);

@@ -2,6 +2,8 @@ package com.safetynet.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Objects;
+
 public class Person {
 
     @JsonProperty("firstName")
@@ -25,7 +27,8 @@ public class Person {
     @JsonProperty("email")
     private String email;
 
-    public Person() {}
+    public Person() {
+    }
 
     public Person(String firstName, String lastName, String address, String city, String zip, String phone, String email) {
         this.firstName = firstName;
@@ -43,7 +46,7 @@ public class Person {
         this.address = address;
         this.phone = phone;
     }
-    
+
     public String getFirstName() {
         return firstName;
     }
@@ -112,4 +115,25 @@ public class Person {
                 ", email='" + email + '\'' +
                 '}';
     }
+
+    //redefini equls pour l suppression d'un objet si nécessaire
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Person person = (Person) obj;
+        return Objects.equals(firstName, person.firstName) &&
+                Objects.equals(lastName, person.lastName) &&
+                Objects.equals(address, person.address) &&
+                Objects.equals(city, person.city) &&
+                Objects.equals(zip, person.zip) &&
+                Objects.equals(phone, person.phone) &&
+                Objects.equals(email, person.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, address, city, zip, phone, email);
+    }
+
 }
