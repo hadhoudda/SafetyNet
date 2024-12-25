@@ -18,8 +18,9 @@ public class PersonController {
     @PostMapping("/person")
     public ResponseEntity<String> postPerson(@RequestBody Person newPerson) {
         try {
-            personService.addPerson(newPerson);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Person added successfully");
+            if (personService.addPerson(newPerson)){
+                return ResponseEntity.status(HttpStatus.CREATED).body("Person added successfully");
+            }else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: Person exists");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to add person ");
         }
@@ -29,8 +30,9 @@ public class PersonController {
     @PatchMapping("/person")
     public ResponseEntity<String> putPerson(@RequestBody Person person) {
         try {
-            personService.updatePerson(person);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Person updated successfully");
+            if (personService.updatePerson(person)){
+                return ResponseEntity.status(HttpStatus.CREATED).body("Person updated successfully");
+            } else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Not found person");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to update person");
         }

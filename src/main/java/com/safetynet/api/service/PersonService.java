@@ -40,7 +40,7 @@ public class PersonService implements IPersonService {
     }
 
     @Override
-    public Person addPerson(Person person) {
+    public boolean addPerson(Person person) {
         try {
             boolean personExist = existPerson(person);
             if (personExist) {
@@ -49,15 +49,16 @@ public class PersonService implements IPersonService {
                 dataJsonContainer.getPersonsList().add(person);
                 dataJsonService.writeFileJson(dataJsonContainer);
                 logger.info("Person ajoutée avec succès");
+                return true;
             }
-            return person;
+            return false;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public Person updatePerson(Person person) {
+    public boolean updatePerson(Person person) {
         try {
             boolean personExist = false;
             for (int i = 0; i < dataJsonContainer.getPersonsList().size(); i++) {
@@ -71,10 +72,11 @@ public class PersonService implements IPersonService {
             if (personExist) {
                 dataJsonService.writeFileJson(dataJsonContainer);
                 logger.info("Mise à jour de la personne réussie");
+                return true;
             } else {
                 logger.info("person n'existe pas");
             }
-            return person;
+            return false;
         } catch (Exception e) {
             throw new RuntimeException("Erreur lors de la mise à jour de la personne", e);
         }
@@ -97,5 +99,4 @@ public class PersonService implements IPersonService {
             throw new RuntimeException("Erreur lors de la suppression de la personne", e);
         }
     }
-
 }
