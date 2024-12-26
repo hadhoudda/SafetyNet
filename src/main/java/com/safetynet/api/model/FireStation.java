@@ -2,6 +2,8 @@ package com.safetynet.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Objects;
+
 public class FireStation {
     @JsonProperty("address")
     private String address;
@@ -30,5 +32,20 @@ public class FireStation {
 
     public void setStation(String station) {
         this.station = station;
+    }
+
+    //redefini equls pour l suppression d'un objet si nécessaire
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        FireStation fireStation = (FireStation) obj;
+        return Objects.equals(address, fireStation.address) &&
+                Objects.equals(station, fireStation.station) ;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(address, station);
     }
 }

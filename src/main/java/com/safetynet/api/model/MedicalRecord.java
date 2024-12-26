@@ -3,6 +3,7 @@ package com.safetynet.api.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
+import java.util.Objects;
 
 public class MedicalRecord {
     @JsonProperty("firstName")
@@ -77,4 +78,23 @@ public class MedicalRecord {
                 ", allergies=" + allergies +
                 '}';
     }
+
+    //redefini eqauls pour l suppression d'un objet si nécessaire
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        MedicalRecord medicalRecord = (MedicalRecord) obj;
+        return Objects.equals(firstName, medicalRecord.firstName) &&
+                Objects.equals(lastName, medicalRecord.lastName) &&
+                Objects.equals(birthdate, medicalRecord.birthdate) &&
+                Objects.equals(medications, medicalRecord.medications) &&
+                Objects.equals(allergies, medicalRecord.allergies);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, birthdate, medications, allergies);
+    }
+
 }

@@ -5,6 +5,7 @@ import com.safetynet.api.container.DataJsonContainer;
 import com.safetynet.api.service.contracts.IDataJsonService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -12,35 +13,42 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static com.safetynet.api.constants.Path.FILE_PATH;
+
 @Service
 public class DataJsonService implements IDataJsonService {
 
     private  static  final Logger logger = LogManager.getLogger(DataJsonService.class);
+
+
     @Override
     public DataJsonContainer readFileJson(String path) {
         ObjectMapper objectMapper = new ObjectMapper();
-        ClassPathResource resource = new ClassPathResource(path);
-        DataJsonContainer data ;
-        try (InputStream inputStream = resource.getInputStream()) {
-           data  = objectMapper.readValue(inputStream, DataJsonContainer.class);
-            return data;
+        File file = new File(path);
+        DataJsonContainer data = null;
+        try {
+            data = objectMapper.readValue(file, DataJsonContainer.class);
+            logger.info("Fichier JSON lu avec succès");
         } catch (IOException e) {
+            logger.error("Erreur lors de la lecture du fichier JSON : {}", e.getMessage());
             e.printStackTrace();
-            return null;
         }
+        return data;
     }
 
+
     @Override
-    public void writeFileJson(Object object) {
+    public void writeFileJson(DataJsonContainer data) {
         ObjectMapper objectMapper = new ObjectMapper();
-        File file = new File("src/main/resources/data.json");
+        File file = new File(FILE_PATH);
         try {
             if (file.exists()) {
-                objectMapper.writeValue(file, object);
+                //readFileJson(FILE_PATH);
+                objectMapper.writeValue(file, data);
                 logger.info("Objet écrit dans le fichier existant");
             } else {
                 if (file.createNewFile()) {
-                    objectMapper.writeValue(file, object);
+                    objectMapper.writeValue(file, data);
                     logger.info("Fichier créé et objet écrit");
                 } else {
                     logger.error("Erreur : Impossible de créer le fichier");
@@ -50,5 +58,6 @@ public class DataJsonService implements IDataJsonService {
             logger.error("Erreur lors de l'écriture dans le fichier JSON : {}", e.getMessage());
             e.printStackTrace();
         }
+
     }
 }
