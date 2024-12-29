@@ -15,12 +15,12 @@ import java.util.Map;
 
 @RestController
 public class ChildAlertByAddressController {
-    IPersonInfoService iPersonInfoService = new PersonInfoService();
+    IPersonInfoService personInfoService = new PersonInfoService();
 
     //2 -retourner une liste d'enfants et une liste des autres membres du foyer
     @GetMapping(value = "/childAlert")
     public ResponseEntity<Map<List<ChildAlertDto>, List<Person>>> getListChild(@RequestParam String address) {
-        Map<List<ChildAlertDto>, List<Person>> listMap = iPersonInfoService.findAllChildByAdress(address);
+        Map<List<ChildAlertDto>, List<Person>> listMap = personInfoService.findAllChildByAdress(address);
 
         if(!listMap.isEmpty()){
             return new ResponseEntity<>(listMap, HttpStatus.OK);

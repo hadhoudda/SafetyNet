@@ -1,30 +1,38 @@
 package com.safetynet.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.Objects;
 
 public class Person {
 
     @JsonProperty("firstName")
+    @NotBlank(message = "FirstName code is required")
     private String firstName;
 
     @JsonProperty("lastName")
+    @NotBlank(message = "LastName code is required")
     private String lastName;
 
     @JsonProperty("address")
+    @NotBlank(message = "Address code is required")
     private String address;
 
     @JsonProperty("city")
+    @NotBlank(message = "City code is required")
     private String city;
 
     @JsonProperty("zip")
+    @NotBlank(message = "Zip code is required")
     private String zip;
 
     @JsonProperty("phone")
+    @NotBlank(message = "Phone is required")
     private String phone;
 
     @JsonProperty("email")
+    @NotBlank(message = "Email is required")
     private String email;
 
     public Person() {

@@ -1,19 +1,27 @@
 package com.safetynet.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
 import java.util.Objects;
 
 public class MedicalRecord {
     @JsonProperty("firstName")
+    @NotBlank(message = "FirstName code is required")
     private String firstName;
+
     @JsonProperty("lastName")
+    @NotBlank(message = "LastName code is required")
     private String lastName;
+
     @JsonProperty("birthdate")
+    @NotBlank(message = "Birthdate code is required")
     private String birthdate;
+
     @JsonProperty("medications")
     private List<String> medications;
+
     @JsonProperty("allergies")
     private List<String> allergies;
 

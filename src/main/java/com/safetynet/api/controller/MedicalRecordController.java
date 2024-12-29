@@ -2,24 +2,22 @@ package com.safetynet.api.controller;
 
 import com.safetynet.api.model.MedicalRecord;
 import com.safetynet.api.service.contracts.IMedicalRecordService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 
-@Controller
+@RestController
 public class MedicalRecordController {
     @Autowired
     IMedicalRecordService medicalRecordService;
 
     //create medicalRecord
     @PostMapping("/medicalRecord")
-    public ResponseEntity<String> getFireStation(@RequestBody MedicalRecord newMedicalRecord) {
+    public ResponseEntity<String> getFireStation(@RequestBody @Valid MedicalRecord newMedicalRecord) {
         try {
             if (medicalRecordService.addMedicalRecord(newMedicalRecord)) {
                 return ResponseEntity.status(HttpStatus.CREATED).body("MedicalRecord added successfully");
@@ -33,7 +31,7 @@ public class MedicalRecordController {
 
     //Update medicalRecord
     @PatchMapping("/medicalRecord")
-    public ResponseEntity<String> putFireStation(@RequestBody MedicalRecord newMedicalRecord) {
+    public ResponseEntity<String> putFireStation(@RequestBody @Valid MedicalRecord newMedicalRecord) {
         try {
             if (medicalRecordService.updateMedicalRecord(newMedicalRecord)) {
                 return ResponseEntity.status(HttpStatus.CREATED).body("MedicalRecord updated successfully");
@@ -47,7 +45,7 @@ public class MedicalRecordController {
 
     //Delete medicalRecord
     @DeleteMapping("/medicalRecord")
-    public ResponseEntity<String> deleteFireStation(@RequestBody MedicalRecord newMedicalRecord) {
+    public ResponseEntity<String> deleteFireStation(@RequestBody @Valid MedicalRecord newMedicalRecord) {
         try {
             if (medicalRecordService.deleteMedicalRecord(newMedicalRecord)) {
                 return ResponseEntity.status(HttpStatus.CREATED).body("MedicalRecord deleted successfully");

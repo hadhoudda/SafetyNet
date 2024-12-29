@@ -2,6 +2,7 @@ package com.safetynet.api.controller;
 
 import com.safetynet.api.model.Person;
 import com.safetynet.api.service.contracts.IPersonService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ public class PersonController {
 
     // Create person
     @PostMapping("/person")
-    public ResponseEntity<String> postPerson(@RequestBody Person newPerson) {
+    public ResponseEntity<String> postPerson(@RequestBody @Valid Person newPerson) {
         try {
             if (personService.addPerson(newPerson)){
                 return ResponseEntity.status(HttpStatus.CREATED).body("Person added successfully");
@@ -28,7 +29,7 @@ public class PersonController {
 
     // update person
     @PatchMapping("/person")
-    public ResponseEntity<String> putPerson(@RequestBody Person person) {
+    public ResponseEntity<String> putPerson(@RequestBody @Valid Person person) {
         try {
             if (personService.updatePerson(person)){
                 return ResponseEntity.status(HttpStatus.CREATED).body("Person updated successfully");
@@ -40,7 +41,7 @@ public class PersonController {
 
     // Delete person
     @DeleteMapping("/person")
-    public ResponseEntity<String> deletePerson(@RequestBody Person person){
+    public ResponseEntity<String> deletePerson(@RequestBody @Valid Person person){
         try{
             if ((personService.deletePerson(person))){
                 return ResponseEntity.status(HttpStatus.OK).body("Person deleted successfully");

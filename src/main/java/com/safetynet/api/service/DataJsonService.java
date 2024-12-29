@@ -5,13 +5,10 @@ import com.safetynet.api.container.DataJsonContainer;
 import com.safetynet.api.service.contracts.IDataJsonService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 import static com.safetynet.api.constants.Path.FILE_PATH;
 
@@ -19,11 +16,14 @@ import static com.safetynet.api.constants.Path.FILE_PATH;
 public class DataJsonService implements IDataJsonService {
 
     private  static  final Logger logger = LogManager.getLogger(DataJsonService.class);
+    private final ObjectMapper objectMapper;
 
+    public DataJsonService(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     @Override
     public DataJsonContainer readFileJson(String path) {
-        ObjectMapper objectMapper = new ObjectMapper();
         File file = new File(path);
         DataJsonContainer data = null;
         try {
@@ -36,14 +36,11 @@ public class DataJsonService implements IDataJsonService {
         return data;
     }
 
-
     @Override
     public void writeFileJson(DataJsonContainer data) {
-        ObjectMapper objectMapper = new ObjectMapper();
         File file = new File(FILE_PATH);
         try {
             if (file.exists()) {
-                //readFileJson(FILE_PATH);
                 objectMapper.writeValue(file, data);
                 logger.info("Objet écrit dans le fichier existant");
             } else {
@@ -56,7 +53,7 @@ public class DataJsonService implements IDataJsonService {
             }
         } catch (IOException e) {
             logger.error("Erreur lors de l'écriture dans le fichier JSON : {}", e.getMessage());
-            e.printStackTrace();
+
         }
 
     }

@@ -22,7 +22,8 @@ public class PersonService implements IPersonService {
     IDataJsonService dataJsonService;
     DataJsonContainer dataJsonContainer;
 
-    private boolean existPerson(Person person) {
+    @Override
+    public boolean existPerson(Person person) {
         try {
             dataJsonContainer = dataJsonService.readFileJson(FILE_PATH);
             List<String> listLastName = dataJsonContainer.getPersonsList().stream()

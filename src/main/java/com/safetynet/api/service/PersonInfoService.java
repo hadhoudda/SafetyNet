@@ -8,8 +8,7 @@ import com.safetynet.api.model.MedicalRecord;
 import com.safetynet.api.model.Person;
 import com.safetynet.api.service.contracts.IDataJsonService;
 import com.safetynet.api.service.contracts.IPersonInfoService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -19,18 +18,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.safetynet.api.constants.Path.FILE_PATH;
+
 @Service
 public class PersonInfoService implements IPersonInfoService {
 
-    IDataJsonService dataJsonService = new DataJsonService();
-    DataJsonContainer dataJsonContainer = new DataJsonContainer();
-    PersonAgeService personAgeService = new PersonAgeService();
+    @Autowired
+    IDataJsonService dataJsonService;
+    @Autowired
+    DataJsonContainer dataJsonContainer;
+    @Autowired
+    PersonAgeService personAgeService;
 
     //methode filtre person selon numero de station
     @Override
     public List<Person> filtrePersonByFirestation(String firestation){
         try {
-            dataJsonContainer = dataJsonService.readFileJson(Path.FILE_PATH);
+            dataJsonContainer = dataJsonService.readFileJson(FILE_PATH);
             //obtenir list les adresse de station indique
             List<String> addresses = dataJsonContainer.getFireStationList().stream()
                     .filter(station -> firestation.equals(station.getStation()))
@@ -48,20 +52,19 @@ public class PersonInfoService implements IPersonInfoService {
 
     @Override
     public PersonListByFireStationWithCountDto findAllPersonListByFireStationWithCount(String stationNumber) throws IOException{
+        PersonListByFireStationWithCountDto personListByFireStationWithCountDto = new PersonListByFireStationWithCountDto();
+        //filtre person selon numero de station indique
+        List<Person> filteredPersons = filtrePersonByFirestation(stationNumber);
 
-            PersonListByFireStationWithCountDto personListByFireStationWithCountDto = new PersonListByFireStationWithCountDto();
-            //filtre person selon numero de station indique
-            List<Person> filteredPersons = filtrePersonByFirestation(stationNumber);
-
-            // Créer une liste de PersonSimplified avec seulement les informations nécessaires
+        // Créer une liste de PersonSimplified avec seulement les informations nécessaires
         List<PersonSimplifiedDto> simplifiedPersons = filteredPersons.stream()
                 .map(person -> new PersonSimplifiedDto(person.getFirstName(), person.getLastName(), person.getAddress(), person.getPhone()))
-                    .toList();
-            personListByFireStationWithCountDto.setPersons(simplifiedPersons);
+                .toList();
+        personListByFireStationWithCountDto.setPersons(simplifiedPersons);
 
-            personListByFireStationWithCountDto.setAdultCount(personAgeService.calculAdulPerson(filteredPersons));
-            personListByFireStationWithCountDto.setChildCount(personAgeService.calculChildPerson(filteredPersons));
-            return personListByFireStationWithCountDto;
+        personListByFireStationWithCountDto.setAdultCount(personAgeService.calculAdulPerson(filteredPersons));
+        personListByFireStationWithCountDto.setChildCount(personAgeService.calculChildPerson(filteredPersons));
+        return personListByFireStationWithCountDto;
     }
 
     @Override
@@ -76,7 +79,7 @@ public class PersonInfoService implements IPersonInfoService {
     @Override
     public Map<List<ChildAlertDto>, List<Person>> findAllChildByAdress(String address) {
         try {
-            dataJsonContainer = dataJsonService.readFileJson(Path.FILE_PATH);
+            dataJsonContainer = dataJsonService.readFileJson(FILE_PATH);
             List<MedicalRecord> medicalRecordList = dataJsonContainer.getMedicalRecordList();
             List<Person> personList = dataJsonContainer.getPersonsList();
             List<ChildAlertDto> childrenList = new ArrayList<>();
@@ -114,7 +117,7 @@ public class PersonInfoService implements IPersonInfoService {
     @Override
     public List<PersonAndMedicalRecordDto> findAllPersonAndMedicalByAdress(String adress) {
         try {
-            dataJsonContainer = dataJsonService.readFileJson(Path.FILE_PATH);
+            dataJsonContainer = dataJsonService.readFileJson(FILE_PATH);
             List<Person> personList = dataJsonContainer.getPersonsList();
             List<MedicalRecord> medicalRecordList = dataJsonContainer.getMedicalRecordList();
             List<PersonAndMedicalRecordDto> personMedicalRecordMap = new ArrayList<>();
@@ -145,7 +148,7 @@ public class PersonInfoService implements IPersonInfoService {
     @Override
     public Map<String, List<PersonAndMedicalRecordDto>> findAllPersonGroupedByAddress(String station) {
         try {
-            dataJsonContainer = dataJsonService.readFileJson(Path.FILE_PATH);
+            dataJsonContainer = dataJsonService.readFileJson(FILE_PATH);
             List<Person> personList = dataJsonContainer.getPersonsList();
             List<FireStation> fireStationList = dataJsonContainer.getFireStationList();
             List<MedicalRecord> medicalRecordList = dataJsonContainer.getMedicalRecordList();
@@ -199,7 +202,7 @@ public class PersonInfoService implements IPersonInfoService {
     @Override
     public List<PersonInfos> findAllPersonInfos(String lastName) {
         try {
-            dataJsonContainer = dataJsonService.readFileJson(Path.FILE_PATH);
+            dataJsonContainer = dataJsonService.readFileJson(FILE_PATH);
             List<Person> personList = dataJsonContainer.getPersonsList();
             List<MedicalRecord> medicalRecordList = dataJsonContainer.getMedicalRecordList();
             List<PersonInfos> personInfosList = new ArrayList<>();
@@ -237,7 +240,7 @@ public class PersonInfoService implements IPersonInfoService {
     @Override
     public List<String> findAllListMailPersonByCity(String city) {
         try {
-            dataJsonContainer = dataJsonService.readFileJson(Path.FILE_PATH);
+            dataJsonContainer = dataJsonService.readFileJson(FILE_PATH);
             List<String> listMail = dataJsonContainer.getPersonsList().stream()
                     .filter(person -> city.equals(person.getCity())).map(Person::getEmail).toList();
 

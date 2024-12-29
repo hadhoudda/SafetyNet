@@ -1,13 +1,17 @@
 package com.safetynet.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.Objects;
 
 public class FireStation {
     @JsonProperty("address")
+    @NotBlank(message = "Address code is required")
     private String address;
+
     @JsonProperty("station")
+    @NotBlank(message = "Station code is required")
     private String station;
 
     public FireStation() {
@@ -32,6 +36,14 @@ public class FireStation {
 
     public void setStation(String station) {
         this.station = station;
+    }
+
+    @Override
+    public String toString() {
+        return "FireStation{" +
+                "address='" + address + '\'' +
+                ", station='" + station + '\'' +
+                '}';
     }
 
     //redefini equls pour l suppression d'un objet si nécessaire
