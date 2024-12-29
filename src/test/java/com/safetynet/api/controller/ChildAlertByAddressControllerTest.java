@@ -66,10 +66,9 @@ public class ChildAlertByAddressControllerTest {
 
         // Act & Assert
         mockMvc.perform(get("/childAlert")
-                        .param("address", address))  // Paramètre de la requête
-                .andExpect(status().isOk())  // Vérification du statut HTTP
-                .andExpect(content().json(objectMapper.writeValueAsString(result)));  // Vérification du corps de la réponse
-
+                        .param("address", address))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(result)));
         // Verify
         verify(personInfoService, times(1)).findAllChildByAdress(address);
     }
