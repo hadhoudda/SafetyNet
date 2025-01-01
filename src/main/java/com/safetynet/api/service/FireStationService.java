@@ -20,10 +20,11 @@ public class FireStationService implements IFireStationService {
     @Autowired
     IDataJsonService dataJsonService;
     DataJsonContainer dataJsonContainer;
+    private String pathFile = FILE_PATH;
     
     private boolean existsFireStation(FireStation fireStation){
         try {
-            dataJsonContainer = dataJsonService.readFileJson(FILE_PATH);
+            dataJsonContainer = dataJsonService.readFileJson(pathFile);
             boolean exist = dataJsonContainer.getFireStationList().contains(fireStation);
             if (exist){
                 return true;
@@ -44,7 +45,7 @@ public class FireStationService implements IFireStationService {
                 return false;
             } else {
                 dataJsonContainer.getFireStationList().add(fireStation);
-                dataJsonService.writeFileJson(dataJsonContainer);
+                dataJsonService.writeFileJson(dataJsonContainer, pathFile);
 
                 return true;
             }
@@ -69,7 +70,7 @@ public class FireStationService implements IFireStationService {
                 }
             }
             if (fireStationExist) {
-                dataJsonService.writeFileJson(dataJsonContainer);
+                dataJsonService.writeFileJson(dataJsonContainer, pathFile);
                 logger.info("Successful updated firestation");
                 return true;
             } else {
@@ -88,7 +89,7 @@ public class FireStationService implements IFireStationService {
 
             if (existsFireStation(fireStation)) {
                 dataJsonContainer.getFireStationList().removeIf(fireStation1 -> fireStation.getAddress().equals(fireStation1.getAddress()));
-                dataJsonService.writeFileJson(dataJsonContainer);
+                dataJsonService.writeFileJson(dataJsonContainer, pathFile);
                 logger.info("Successful deleted fireStation");
                 return true;
             } else {

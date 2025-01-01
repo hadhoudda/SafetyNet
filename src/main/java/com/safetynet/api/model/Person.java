@@ -48,13 +48,6 @@ public class Person {
         this.email = email;
     }
 
-    public Person(String firstName, String lastName, String address, String phone) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-        this.phone = phone;
-    }
-
     public String getFirstName() {
         return firstName;
     }

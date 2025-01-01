@@ -4,6 +4,7 @@ import com.safetynet.api.dto.ChildAlertDto;
 import com.safetynet.api.model.Person;
 import com.safetynet.api.service.PersonInfoService;
 import com.safetynet.api.service.contracts.IPersonInfoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +16,9 @@ import java.util.Map;
 
 @RestController
 public class ChildAlertByAddressController {
-    IPersonInfoService personInfoService = new PersonInfoService();
+
+    @Autowired
+    IPersonInfoService personInfoService ;
 
     //2 -retourner une liste d'enfants et une liste des autres membres du foyer
     @GetMapping(value = "/childAlert")

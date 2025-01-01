@@ -2,6 +2,7 @@ package com.safetynet.api.controller;
 
 import com.safetynet.api.service.PersonInfoService;
 import com.safetynet.api.service.contracts.IPersonInfoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +14,8 @@ import java.util.List;
 @RestController
 public class CommunityEmailController {
 
-    IPersonInfoService iPersonInfoService = new PersonInfoService();
+    @Autowired
+    IPersonInfoService iPersonInfoService;
 
     //7- retourner les adresses mail de tous les habitants de la ville
     @GetMapping(value = "/communityEmail")

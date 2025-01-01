@@ -46,24 +46,24 @@ public class ChildAlertByAddressControllerTest {
         objectMapper = new ObjectMapper();
     }
 
-    @Test
-    public void testGetListChild_Success() throws Exception {
-        // Arrange
-        String address = "123 Main St";
-
+    private Map<List<ChildAlertDto>, List<Person>> getListPersonChildren(){
         ChildAlertDto child1 = new ChildAlertDto("John", "Krys", 5);
         ChildAlertDto child2 = new ChildAlertDto("Jane", "Krys", 8);
         List<ChildAlertDto> children = Arrays.asList(child1, child2);
-
-        Person adult1 = new Person("Alice", "Krys", "5 av lyon", "Paris", "123", "235648", "alice@mail.com");
+        Person adult1 = new Person("Alice", "Krys", "123 Main St", "Paris", "123", "235648", "alice@mail.com");
         Person adult2 = new Person("Maxime", "Krys", "123 Main St", "Nice", "568", "569874", "maxime@mail.com");
         List<Person> adults = Arrays.asList(adult1, adult2);
+        Map<List<ChildAlertDto>, List<Person>> map = new HashMap<>();
+        map.put(children, adults);
+        return map;
+    }
 
-        Map<List<ChildAlertDto>, List<Person>> result = new HashMap<>();
-        result.put(children, adults);
-
+    @Test
+    public void getListChildTest_Success() throws Exception {
+        // Arrange
+        String address = "123 Main St";
+        Map<List<ChildAlertDto>, List<Person>> result = getListPersonChildren();
         when(personInfoService.findAllChildByAdress(address)).thenReturn(result);
-
         // Act & Assert
         mockMvc.perform(get("/childAlert")
                         .param("address", address))
@@ -74,7 +74,7 @@ public class ChildAlertByAddressControllerTest {
     }
 
     @Test
-    public void testGetListChild_NotFound() throws Exception {
+    public void getListChildTest_NotFound() throws Exception {
         // Arrange
         String address = "Unknown Address";
         when(personInfoService.findAllChildByAdress(address)).thenReturn(new HashMap<>());

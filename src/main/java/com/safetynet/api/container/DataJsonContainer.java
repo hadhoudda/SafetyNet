@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.safetynet.api.model.FireStation;
 import com.safetynet.api.model.MedicalRecord;
 import com.safetynet.api.model.Person;
+import org.springframework.stereotype.Component;
 
 
 import java.util.List;
 import java.util.Objects;
 
+@Component
 public class DataJsonContainer {
     @JsonProperty("persons")
     private List<Person> personsList;

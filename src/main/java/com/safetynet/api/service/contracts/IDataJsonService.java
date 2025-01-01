@@ -6,5 +6,5 @@ import java.io.IOException;
 
 public interface IDataJsonService {
     DataJsonContainer readFileJson(String path) throws IOException;
-    void writeFileJson(DataJsonContainer dataJsonContainer);
+    void writeFileJson(DataJsonContainer dataJsonContainer, String path);
 }

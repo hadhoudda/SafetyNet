@@ -32,6 +32,7 @@ public class PersonServiceTest {
     private PersonService personService;
     private Person person = new Person("Alice", "Jean", "5 av lyon", "Paris", "123", "235648", "alice@mail.com");
     private List<Person> personList = new ArrayList<>();
+    private String pathFile = FILE_PATH;
 
     @BeforeEach
     private void setUp() {
@@ -45,7 +46,7 @@ public class PersonServiceTest {
     void existPersonTest() throws IOException {
         //Arrange
         List<Person> personList = Arrays.asList(person);
-        when(dataJsonService.readFileJson(FILE_PATH)).thenReturn(dataJsonContainer);
+        when(dataJsonService.readFileJson(pathFile)).thenReturn(dataJsonContainer);
         when(dataJsonContainer.getPersonsList()).thenReturn(personList);
         System.out.println(personList);
         //Act
@@ -60,7 +61,7 @@ public class PersonServiceTest {
         when(dataJsonService.readFileJson(FILE_PATH)).thenReturn(dataJsonContainer);
         when(dataJsonContainer.getPersonsList()).thenReturn(personList);
         //when(personService.existPerson(person)).thenReturn(false);
-        doNothing().when(dataJsonService).writeFileJson(dataJsonContainer);
+        doNothing().when(dataJsonService).writeFileJson(dataJsonContainer, pathFile);
         // Act
         boolean result = personService.addPerson(person);
         System.out.println(personList);
@@ -76,8 +77,8 @@ public class PersonServiceTest {
         List<Person> personList = new ArrayList<>(Arrays.asList(person));
         lenient().when((dataJsonService.readFileJson(FILE_PATH))).thenReturn(dataJsonContainer);
         when(dataJsonContainer.getPersonsList()).thenReturn(personList);
-        //when(personService.existPerson(person)).thenReturn(true);
-        doNothing().when(dataJsonService).writeFileJson(dataJsonContainer);
+       // when(personService.existPerson(person)).thenReturn(true);
+        doNothing().when(dataJsonService).writeFileJson(dataJsonContainer, pathFile);
         // Act
         boolean result = personService.updatePerson(new Person("Alice", "Jean", "26 place europe", "Nice", "123", "235648", "alice@mail.com"));
         // Assert
@@ -90,13 +91,13 @@ public class PersonServiceTest {
         List<Person> personList = new ArrayList<>(Arrays.asList(person));
         when(dataJsonService.readFileJson(FILE_PATH)).thenReturn(dataJsonContainer);
         when(dataJsonContainer.getPersonsList()).thenReturn(personList);
-        doNothing().when(dataJsonService).writeFileJson(dataJsonContainer);
+        doNothing().when(dataJsonService).writeFileJson(dataJsonContainer, pathFile);
         // Act
         boolean result = personService.deletePerson(person);
         // Assert
         assertTrue(result);
         assertFalse(personList.contains(person));
         //Verify
-        verify(dataJsonService, times(1)).writeFileJson(dataJsonContainer);
+        verify(dataJsonService, times(1)).writeFileJson(dataJsonContainer, pathFile);
     }
 }

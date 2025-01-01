@@ -37,8 +37,8 @@ public class DataJsonService implements IDataJsonService {
     }
 
     @Override
-    public void writeFileJson(DataJsonContainer data) {
-        File file = new File(FILE_PATH);
+    public void writeFileJson(DataJsonContainer data, String path) {
+        File file = new File(path);
         try {
             if (file.exists()) {
                 objectMapper.writeValue(file, data);

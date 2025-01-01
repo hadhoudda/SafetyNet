@@ -16,12 +16,12 @@ public class FireStationController {
 
     //create fireStation
     @PostMapping("/firestation")
-    public ResponseEntity<String> getFireStation(@RequestBody @Valid FireStation newFireStation){
+    public ResponseEntity<String> postFireStation(@RequestBody @Valid FireStation newFireStation){
         try {
             if (fireStationService.addFireStation(newFireStation)){
                 return ResponseEntity.status(HttpStatus.CREATED).body("FireStation added successfully");
             }else
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: fireStation exists");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: FireStation exists");
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to add fireStation ");
@@ -47,7 +47,7 @@ public class FireStationController {
     public ResponseEntity<String> deleteFireStation(@RequestBody @Valid FireStation newFireStation){
         try {
             if (fireStationService.deleteFireStation(newFireStation)){
-                return ResponseEntity.status(HttpStatus.CREATED).body("FireStation deleted successfully");
+                return ResponseEntity.status(HttpStatus.OK).body("FireStation deleted successfully");
             }else
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: fireStation is not exists");
 

@@ -3,6 +3,7 @@ package com.safetynet.api.controller;
 import com.safetynet.api.dto.PersonListByFireStationWithCountDto;
 import com.safetynet.api.service.PersonInfoService;
 import com.safetynet.api.service.contracts.IPersonInfoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,8 @@ import java.io.IOException;
 @RestController
 public class PersonCoveredByFireStationController {
 
-    IPersonInfoService iPersonInfoService = new PersonInfoService();
+    @Autowired
+    IPersonInfoService iPersonInfoService;
 
     // 1- retourner une liste des personnes couvertes par la caserne de pompiers correspondante
     @GetMapping(value = "/firestation")

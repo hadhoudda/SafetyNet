@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
 public class PersonController {
 
@@ -46,7 +45,6 @@ public class PersonController {
             if ((personService.deletePerson(person))){
                 return ResponseEntity.status(HttpStatus.OK).body("Person deleted successfully");
             } else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Not found person");
-
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to delete person");
         }

@@ -25,13 +25,13 @@ public class PersonControllerTest {
     @Mock
     private IPersonService personService;
 
-    @Autowired
-    private MockMvc mockMvc;
-
-
     @InjectMocks
     private PersonController personController;
 
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
     private ObjectMapper objectMapper;
 
     private Person person = new Person("Alice", "Jean", "5 av lyon", "Paris", "123", "235648", "alice@mail.com");

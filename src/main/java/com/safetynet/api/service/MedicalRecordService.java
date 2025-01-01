@@ -21,11 +21,11 @@ public class MedicalRecordService implements IMedicalRecordService {
     @Autowired
     IDataJsonService dataJsonService;
     DataJsonContainer dataJsonContainer;
-
+    private String pathFile = FILE_PATH;
 
     private boolean existPerson(MedicalRecord medicalRecord) {
         try {
-            dataJsonContainer = dataJsonService.readFileJson(FILE_PATH);
+            dataJsonContainer = dataJsonService.readFileJson(pathFile);
             List<String> listLastName = dataJsonContainer.getPersonsList().stream()
                     .map(Person::getLastName).toList();
 
@@ -59,7 +59,7 @@ public class MedicalRecordService implements IMedicalRecordService {
                     return false;
                 } else {
                     dataJsonContainer.getMedicalRecordList().add(medicalRecord);
-                    dataJsonService.writeFileJson(dataJsonContainer);
+                    dataJsonService.writeFileJson(dataJsonContainer, pathFile);
                     logger.info("medicalRecord added successfully");
                     return true;
                 }
@@ -88,7 +88,7 @@ public class MedicalRecordService implements IMedicalRecordService {
                 }
             }
             if (existsMedicalRecod){
-                dataJsonService.writeFileJson(dataJsonContainer);
+                dataJsonService.writeFileJson(dataJsonContainer, pathFile);
                 logger.info("Successful updated MedicalRecord ");
                 return true;
             }else {
@@ -106,7 +106,7 @@ public class MedicalRecordService implements IMedicalRecordService {
         try {
             if(existsMedicalRecord(medicalRecord)){
                 dataJsonContainer.getMedicalRecordList().remove(medicalRecord);
-                dataJsonService.writeFileJson(dataJsonContainer);
+                dataJsonService.writeFileJson(dataJsonContainer, pathFile);
                 logger.info("Successful deleted medicalRecord ");
                 return true;
             } else {

@@ -48,7 +48,7 @@ public class MedicalRecordController {
     public ResponseEntity<String> deleteFireStation(@RequestBody @Valid MedicalRecord newMedicalRecord) {
         try {
             if (medicalRecordService.deleteMedicalRecord(newMedicalRecord)) {
-                return ResponseEntity.status(HttpStatus.CREATED).body("MedicalRecord deleted successfully");
+                return ResponseEntity.status(HttpStatus.OK).body("MedicalRecord deleted successfully");
             } else
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: medicalRecord is not exists");
 

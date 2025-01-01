@@ -1,11 +1,7 @@
 package com.safetynet.api.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.safetynet.api.constants.Path;
 import com.safetynet.api.container.DataJsonContainer;
-import com.safetynet.api.model.FireStation;
-import com.safetynet.api.model.MedicalRecord;
-import com.safetynet.api.model.Person;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,8 +12,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -29,9 +23,7 @@ public class DataJsonServiceTest {
     private DataJsonService dataJsonService;
     @Mock
     private ObjectMapper objectMapper;
-    @Mock
-    DataJsonContainer dataTest;
-    private String path = "src/main/resources/data.json";
+    private String pathFile = "src/test/resources/dataTest.json";
     @Mock
     private File file;
 
@@ -47,10 +39,10 @@ public class DataJsonServiceTest {
     public void readFileJsonTest() throws IOException {
         // Arrange
         DataJsonContainer data = new DataJsonContainer();
-        File file = new File(path);
+        File file = new File(pathFile);
         when(objectMapper.readValue(file, DataJsonContainer.class)).thenReturn(data);
         // Act
-        DataJsonContainer result = dataJsonService.readFileJson(path);
+        DataJsonContainer result = dataJsonService.readFileJson(pathFile);
         // Assert
         assertNotNull(result);
         assertEquals(data, result);
@@ -61,14 +53,15 @@ public class DataJsonServiceTest {
 //    public void writeFileJsonTest_FileExists() throws IOException {
 //        // Arrange
 //        DataJsonContainer dataTest = new DataJsonContainer();
+//        //File file = new File(pathFile);
 //        when(file.exists()).thenReturn(true);
 //        //Act
-//        dataJsonService.writeFileJson(dataTest);
+//        dataJsonService.writeFileJson(dataTest, pathFile);
 //        // Verify
 //        verify(objectMapper, times(1)).writeValue(file, dataTest);
 //        verify(file, times(1)).exists();
 //    }
-
+//
 //    @Test
 //    public void writeFileJsonTest_FileDoesNotExist() throws IOException {
 //        // Arrange

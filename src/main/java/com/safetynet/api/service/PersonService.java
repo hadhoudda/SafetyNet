@@ -21,11 +21,12 @@ public class PersonService implements IPersonService {
     @Autowired
     IDataJsonService dataJsonService;
     DataJsonContainer dataJsonContainer;
+    private String pathFile = FILE_PATH;
 
     @Override
     public boolean existPerson(Person person) {
         try {
-            dataJsonContainer = dataJsonService.readFileJson(FILE_PATH);
+            dataJsonContainer = dataJsonService.readFileJson(pathFile);
             List<String> listLastName = dataJsonContainer.getPersonsList().stream()
                     .map(Person::getLastName).toList();
 
@@ -47,7 +48,7 @@ public class PersonService implements IPersonService {
                 return false;
             } else {
                 dataJsonContainer.getPersonsList().add(person);
-                dataJsonService.writeFileJson(dataJsonContainer);
+                dataJsonService.writeFileJson(dataJsonContainer, pathFile);
                 logger.info("Person added successfully");
                 return true;
             }
@@ -70,7 +71,7 @@ public class PersonService implements IPersonService {
                 }
             }
             if (personExist) {
-                dataJsonService.writeFileJson(dataJsonContainer);
+                dataJsonService.writeFileJson(dataJsonContainer, pathFile);
                 logger.info("Successful updated Person ");
                 return true;
             } else {
@@ -88,7 +89,7 @@ public class PersonService implements IPersonService {
         try {
             if (existPerson(person)){
                 dataJsonContainer.getPersonsList().remove(person);
-                dataJsonService.writeFileJson(dataJsonContainer);
+                dataJsonService.writeFileJson(dataJsonContainer, pathFile);
                 logger.info("Successful deleted person ");
                 return true;
             } else {
