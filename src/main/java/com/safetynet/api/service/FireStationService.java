@@ -22,7 +22,7 @@ public class FireStationService implements IFireStationService {
     DataJsonContainer dataJsonContainer;
     private String pathFile = FILE_PATH;
     
-    private boolean existsFireStation(FireStation fireStation){
+    public boolean existsFireStation(FireStation fireStation){
         try {
             dataJsonContainer = dataJsonService.readFileJson(pathFile);
             boolean exist = dataJsonContainer.getFireStationList().contains(fireStation);

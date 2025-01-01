@@ -22,6 +22,8 @@ public class DataJsonServiceTest {
     @InjectMocks
     private DataJsonService dataJsonService;
     @Mock
+    DataJsonContainer data;
+    @Mock
     private ObjectMapper objectMapper;
     private String pathFile = "src/test/resources/dataTest.json";
     @Mock
@@ -38,7 +40,6 @@ public class DataJsonServiceTest {
     @Test
     public void readFileJsonTest() throws IOException {
         // Arrange
-        DataJsonContainer data = new DataJsonContainer();
         File file = new File(pathFile);
         when(objectMapper.readValue(file, DataJsonContainer.class)).thenReturn(data);
         // Act

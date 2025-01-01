@@ -39,10 +39,10 @@ public class MedicalRecordControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-
     private List<String> medications = Arrays.asList("ibupurin:200mg", "hydrapermazol:400mg");
     private List<String> allergies = Arrays.asList("nillacilan");
     private MedicalRecord medicalRecord = new MedicalRecord("Nicola", "Leno", "12/06/1975", medications, allergies);
+
     @BeforeEach
     private void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(medicalRecordController).build();

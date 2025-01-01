@@ -21,9 +21,9 @@ public class MedicalRecordService implements IMedicalRecordService {
     @Autowired
     IDataJsonService dataJsonService;
     DataJsonContainer dataJsonContainer;
-    private String pathFile = FILE_PATH;
+    private final String pathFile = FILE_PATH;
 
-    private boolean existPerson(MedicalRecord medicalRecord) {
+    public boolean existPersonByMedicalRecord(MedicalRecord medicalRecord) {
         try {
             dataJsonContainer = dataJsonService.readFileJson(pathFile);
             List<String> listLastName = dataJsonContainer.getPersonsList().stream()
@@ -37,7 +37,8 @@ public class MedicalRecordService implements IMedicalRecordService {
             throw new RuntimeException(e);
         }
     }
-    private boolean existsMedicalRecord(MedicalRecord medicalRecord){
+
+    public boolean existsMedicalRecord(MedicalRecord medicalRecord) {
         try {
             dataJsonContainer = dataJsonService.readFileJson(FILE_PATH);
             List<String> listLastName = dataJsonContainer.getMedicalRecordList().stream()
@@ -53,8 +54,8 @@ public class MedicalRecordService implements IMedicalRecordService {
     @Override
     public boolean addMedicalRecord(MedicalRecord medicalRecord) {
         try {
-            if (existPerson(medicalRecord)){ //verify person exists
-                if (existsMedicalRecord(medicalRecord)){
+            if (existPersonByMedicalRecord(medicalRecord)) { //verify person exists
+                if (existsMedicalRecord(medicalRecord)) {
                     logger.error(" medicalRecord exists ");
                     return false;
                 } else {
@@ -63,7 +64,7 @@ public class MedicalRecordService implements IMedicalRecordService {
                     logger.info("medicalRecord added successfully");
                     return true;
                 }
-            }else {
+            } else {
                 logger.error("person is not exists: impossible add medicalRecord ");
                 return false;
             }
@@ -78,24 +79,24 @@ public class MedicalRecordService implements IMedicalRecordService {
         try {
             boolean existsMedicalRecod = false;
             dataJsonContainer = dataJsonService.readFileJson(FILE_PATH);
-            for (int i=0; i < dataJsonContainer.getMedicalRecordList().size(); i++){
+            for (int i = 0; i < dataJsonContainer.getMedicalRecordList().size(); i++) {
                 MedicalRecord medicalRecordExisting = dataJsonContainer.getMedicalRecordList().get(i);
                 if (medicalRecordExisting.getLastName().equals(medicalRecord.getLastName())
-                    && medicalRecordExisting.getFirstName().equals(medicalRecord.getFirstName())){
+                        && medicalRecordExisting.getFirstName().equals(medicalRecord.getFirstName())) {
                     dataJsonContainer.getMedicalRecordList().set(i, medicalRecord);//mettre à jour medicalRecord
                     existsMedicalRecod = true;
                     break;
                 }
             }
-            if (existsMedicalRecod){
+            if (existsMedicalRecod) {
                 dataJsonService.writeFileJson(dataJsonContainer, pathFile);
                 logger.info("Successful updated MedicalRecord ");
                 return true;
-            }else {
+            } else {
                 logger.info("MedicalRecord is not exists");
                 return false;
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             logger.error("Error writing to JSON file", e);
             throw new RuntimeException("Error writing to JSON file", e);
         }
@@ -104,7 +105,7 @@ public class MedicalRecordService implements IMedicalRecordService {
     @Override
     public boolean deleteMedicalRecord(MedicalRecord medicalRecord) {
         try {
-            if(existsMedicalRecord(medicalRecord)){
+            if (existsMedicalRecord(medicalRecord)) {
                 dataJsonContainer.getMedicalRecordList().remove(medicalRecord);
                 dataJsonService.writeFileJson(dataJsonContainer, pathFile);
                 logger.info("Successful deleted medicalRecord ");

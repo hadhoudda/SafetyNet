@@ -9,6 +9,14 @@ public class PersonListByFireStationWithCountDto {
     private int adultCount;
     private int childCount;
 
+    public PersonListByFireStationWithCountDto() {
+    }
+
+    public PersonListByFireStationWithCountDto(List<PersonSimplifiedDto> persons, int adultCount, int childCount) {
+        this.persons = persons;
+        this.adultCount = adultCount;
+        this.childCount = childCount;
+    }
 
     public List<PersonSimplifiedDto> getPersons() {
         return persons;

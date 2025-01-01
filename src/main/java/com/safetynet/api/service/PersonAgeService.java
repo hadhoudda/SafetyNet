@@ -14,6 +14,7 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import static com.safetynet.api.constants.Path.FILE_PATH;
 import static java.time.LocalDate.parse;
 
 @Service
@@ -36,7 +37,7 @@ public class PersonAgeService {
 
     public int calculAdulPerson(List<Person> personList) throws IOException {
         int count = 0;
-        dataJsonContainer = dataJsonService.readFileJson(Path.FILE_PATH);
+        dataJsonContainer = dataJsonService.readFileJson(FILE_PATH);
         List<MedicalRecord> medicalRecordList = dataJsonContainer.getMedicalRecordList();
         for (Person person : personList){
             for (MedicalRecord medicalRecord : medicalRecordList){
@@ -53,7 +54,7 @@ public class PersonAgeService {
 
     public int calculChildPerson(List<Person> personList) throws IOException {
         int count = 0;
-        dataJsonContainer = dataJsonService.readFileJson(Path.FILE_PATH);
+        dataJsonContainer = dataJsonService.readFileJson(FILE_PATH);
         List<MedicalRecord> medicalRecordList = dataJsonContainer.getMedicalRecordList();
         for (Person person : personList){
             for (MedicalRecord medicalRecord : medicalRecordList){
