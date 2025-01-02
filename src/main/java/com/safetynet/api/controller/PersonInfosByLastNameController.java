@@ -1,7 +1,6 @@
 package com.safetynet.api.controller;
 
 import com.safetynet.api.dto.PersonInfos;
-import com.safetynet.api.service.PersonInfoService;
 import com.safetynet.api.service.contracts.IPersonInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,11 +15,11 @@ import java.util.List;
 public class PersonInfosByLastNameController {
 
     @Autowired
-    IPersonInfoService iPersonInfoService;
+    IPersonInfoService personInfoService;
 
     @GetMapping(value = "/personInfolastName={lastName}")
     public ResponseEntity<List<PersonInfos>> getPersonInfoByLastName(@PathVariable String lastName){
-        List<PersonInfos> personInfosList = iPersonInfoService.findAllPersonInfos(lastName);
+        List<PersonInfos> personInfosList = personInfoService.findAllPersonInfos(lastName);
 
         if (!personInfosList.isEmpty()){
             return new ResponseEntity<>(personInfosList, HttpStatus.OK);

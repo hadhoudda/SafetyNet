@@ -17,11 +17,11 @@ import java.util.Map;
 public class PersonGroupedByAddressController {
 
     @Autowired
-    IPersonInfoService iPersonInfoService ;
+    IPersonInfoService personInfoService ;
 
     @GetMapping(value = "/flood/stations")
     public ResponseEntity<Map<String, List<PersonAndMedicalRecordDto>>> getAllPersonGroupedByAddress(String stations){
-        Map<String, List<PersonAndMedicalRecordDto>> listPersons = iPersonInfoService.findAllPersonGroupedByAddress(stations);
+        Map<String, List<PersonAndMedicalRecordDto>> listPersons = personInfoService.findAllPersonGroupedByAddress(stations);
 
         if (!listPersons.isEmpty()){
             return new ResponseEntity<>(listPersons, HttpStatus.OK);

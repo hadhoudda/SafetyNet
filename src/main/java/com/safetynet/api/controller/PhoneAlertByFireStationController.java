@@ -15,13 +15,13 @@ import java.util.List;
 public class PhoneAlertByFireStationController {
 
     @Autowired
-    IPersonInfoService iPersonInfoService ;
+    IPersonInfoService personInfoService ;
 
     // 3- retourner une liste des numeros de telephone des persons couvertes par la caserne de pompiers correspondante
     @GetMapping(value = "/phoneAlert")
     public ResponseEntity<List<String>> getListPhonePersonByFireStation(@RequestParam String firestation) {
 
-        List<String> listPhone = iPersonInfoService.findAllListPhonePersonByFireStation(firestation);
+        List<String> listPhone = personInfoService.findAllListPhonePersonByFireStation(firestation);
 
         if (!listPhone.isEmpty()) {
             return new ResponseEntity<>(listPhone, HttpStatus.OK);

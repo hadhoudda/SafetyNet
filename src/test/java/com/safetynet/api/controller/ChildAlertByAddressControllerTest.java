@@ -29,14 +29,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 public class ChildAlertByAddressControllerTest {
 
+    @InjectMocks
+    private ChildAlertByAddressController childAlertByAddressController;
     @Autowired
     private MockMvc mockMvc;
 
     @Mock
     private IPersonInfoService personInfoService;
-
-    @InjectMocks
-    private ChildAlertByAddressController childAlertByAddressController;
 
     private ObjectMapper objectMapper;
 
