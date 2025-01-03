@@ -1,12 +1,10 @@
-package com.safetynet.api.service;
+package com.safetynet.api.unitaire.service;
 
-import com.safetynet.api.constants.Path;
 import com.safetynet.api.container.DataJsonContainer;
-import com.safetynet.api.model.FireStation;
 import com.safetynet.api.model.MedicalRecord;
 import com.safetynet.api.model.Person;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import com.safetynet.api.service.DataJsonService;
+import com.safetynet.api.service.PersonAgeService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

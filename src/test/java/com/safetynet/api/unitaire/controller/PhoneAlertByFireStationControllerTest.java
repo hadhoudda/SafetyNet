@@ -1,6 +1,7 @@
-package com.safetynet.api.controller;
+package com.safetynet.api.unitaire.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.safetynet.api.controller.PhoneAlertByFireStationController;
 import com.safetynet.api.service.contracts.IPersonInfoService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

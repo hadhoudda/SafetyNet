@@ -1,6 +1,5 @@
 package com.safetynet.api.controller;
 
-import com.safetynet.api.service.PersonInfoService;
 import com.safetynet.api.service.contracts.IPersonInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

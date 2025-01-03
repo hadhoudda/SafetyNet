@@ -22,7 +22,7 @@ public class FireStationService implements IFireStationService {
     DataJsonContainer dataJsonContainer;
     private String pathFile = FILE_PATH;
     
-    public boolean existsFireStation(FireStation fireStation){
+    public boolean existsFireStation(FireStation fireStation, String pathFile){
         try {
             dataJsonContainer = dataJsonService.readFileJson(pathFile);
             boolean exist = dataJsonContainer.getFireStationList().contains(fireStation);
@@ -38,9 +38,9 @@ public class FireStationService implements IFireStationService {
 
 
     @Override
-    public boolean addFireStation(FireStation fireStation) {
+    public boolean addFireStation(FireStation fireStation, String pathFile) {
         try {
-            if (existsFireStation(fireStation)) {
+            if (existsFireStation(fireStation, pathFile)) {
                 logger.error("Error : firestation exists");
                 return false;
             } else {
@@ -57,7 +57,7 @@ public class FireStationService implements IFireStationService {
 
 
     @Override
-    public boolean updateFireStation(FireStation fireStation ) {
+    public boolean updateFireStation(FireStation fireStation, String pathFile ) {
         try {
 
             boolean fireStationExist = false;
@@ -84,10 +84,10 @@ public class FireStationService implements IFireStationService {
     }
 
     @Override
-    public boolean deleteFireStation(FireStation fireStation) {
+    public boolean deleteFireStation(FireStation fireStation, String pathFile) {
         try {
 
-            if (existsFireStation(fireStation)) {
+            if (existsFireStation(fireStation, pathFile)) {
                 dataJsonContainer.getFireStationList().removeIf(fireStation1 -> fireStation.getAddress().equals(fireStation1.getAddress()));
                 dataJsonService.writeFileJson(dataJsonContainer, pathFile);
                 logger.info("Successful deleted fireStation");

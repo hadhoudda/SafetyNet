@@ -4,7 +4,9 @@ import com.safetynet.api.model.MedicalRecord;
 import com.safetynet.api.model.Person;
 
 public interface IMedicalRecordService {
-    boolean addMedicalRecord(MedicalRecord medicalRecord);
-    boolean updateMedicalRecord(MedicalRecord medicalRecord);
-    boolean deleteMedicalRecord(MedicalRecord medicalRecord) ;
+    boolean existPersonByMedicalRecord(MedicalRecord medicalRecord, String pathFile);
+    boolean existsMedicalRecord(MedicalRecord medicalRecord, String pathFile);
+    boolean addMedicalRecord(MedicalRecord medicalRecord, String pathFile);
+    boolean updateMedicalRecord(MedicalRecord medicalRecord, String pathFile);
+    boolean deleteMedicalRecord(MedicalRecord medicalRecord, String pathFile) ;
 }

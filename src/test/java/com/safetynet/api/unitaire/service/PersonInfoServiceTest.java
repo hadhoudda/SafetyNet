@@ -1,4 +1,4 @@
-package com.safetynet.api.service;
+package com.safetynet.api.unitaire.service;
 
 import com.safetynet.api.container.DataJsonContainer;
 import com.safetynet.api.dto.ChildAlertDto;
@@ -8,6 +8,8 @@ import com.safetynet.api.dto.PersonListByFireStationWithCountDto;
 import com.safetynet.api.model.FireStation;
 import com.safetynet.api.model.MedicalRecord;
 import com.safetynet.api.model.Person;
+import com.safetynet.api.service.PersonAgeService;
+import com.safetynet.api.service.PersonInfoService;
 import com.safetynet.api.service.contracts.IDataJsonService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

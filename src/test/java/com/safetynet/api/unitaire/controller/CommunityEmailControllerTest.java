@@ -1,9 +1,7 @@
-package com.safetynet.api.controller;
+package com.safetynet.api.unitaire.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.safetynet.api.dto.ChildAlertDto;
-import com.safetynet.api.model.Person;
+import com.safetynet.api.controller.CommunityEmailController;
 import com.safetynet.api.service.contracts.IPersonInfoService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +16,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;

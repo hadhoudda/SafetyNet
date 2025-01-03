@@ -1,9 +1,8 @@
-package com.safetynet.api.service;
+package com.safetynet.api.unitaire.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.api.container.DataJsonContainer;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import com.safetynet.api.service.DataJsonService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,14 +28,6 @@ public class DataJsonServiceTest {
     @Mock
     private File file;
 
-    @BeforeEach
-    private void setUp() {
-    }
-
-    @AfterEach
-    private void tearDown() {
-    }
-
     @Test
     public void readFileJsonTest() throws IOException {
         // Arrange
@@ -49,30 +40,4 @@ public class DataJsonServiceTest {
         assertEquals(data, result);
     }
 
-
-//    @Test
-//    public void writeFileJsonTest_FileExists() throws IOException {
-//        // Arrange
-//        DataJsonContainer dataTest = new DataJsonContainer();
-//        //File file = new File(pathFile);
-//        when(file.exists()).thenReturn(true);
-//        //Act
-//        dataJsonService.writeFileJson(dataTest, pathFile);
-//        // Verify
-//        verify(objectMapper, times(1)).writeValue(file, dataTest);
-//        verify(file, times(1)).exists();
-//    }
-//
-//    @Test
-//    public void writeFileJsonTest_FileDoesNotExist() throws IOException {
-//        // Arrange
-//        DataJsonContainer data = new DataJsonContainer();
-//        when(file.exists()).thenReturn(false);
-//        when(file.createNewFile()).thenReturn(true);
-//        // Acct
-//        dataJsonService.writeFileJson(data);
-//        // Verify
-//        verify(objectMapper, times(1)).writeValue(file, data);
-//        verify(file, times(1)).createNewFile();
-//    }
 }

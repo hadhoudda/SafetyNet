@@ -23,7 +23,7 @@ public class MedicalRecordService implements IMedicalRecordService {
     DataJsonContainer dataJsonContainer;
     private final String pathFile = FILE_PATH;
 
-    public boolean existPersonByMedicalRecord(MedicalRecord medicalRecord) {
+    public boolean existPersonByMedicalRecord(MedicalRecord medicalRecord, String pathFile) {
         try {
             dataJsonContainer = dataJsonService.readFileJson(pathFile);
             List<String> listLastName = dataJsonContainer.getPersonsList().stream()
@@ -38,9 +38,9 @@ public class MedicalRecordService implements IMedicalRecordService {
         }
     }
 
-    public boolean existsMedicalRecord(MedicalRecord medicalRecord) {
+    public boolean existsMedicalRecord(MedicalRecord medicalRecord, String pathFile) {
         try {
-            dataJsonContainer = dataJsonService.readFileJson(FILE_PATH);
+            dataJsonContainer = dataJsonService.readFileJson(pathFile);
             List<String> listLastName = dataJsonContainer.getMedicalRecordList().stream()
                     .map(MedicalRecord::getLastName).toList();
             List<String> listFirstName = dataJsonContainer.getMedicalRecordList().stream()
@@ -52,10 +52,10 @@ public class MedicalRecordService implements IMedicalRecordService {
     }
 
     @Override
-    public boolean addMedicalRecord(MedicalRecord medicalRecord) {
+    public boolean addMedicalRecord(MedicalRecord medicalRecord, String pathFile) {
         try {
-            if (existPersonByMedicalRecord(medicalRecord)) { //verify person exists
-                if (existsMedicalRecord(medicalRecord)) {
+            if (existPersonByMedicalRecord(medicalRecord, pathFile)) { //verify person exists
+                if (existsMedicalRecord(medicalRecord, pathFile)) {
                     logger.error(" medicalRecord exists ");
                     return false;
                 } else {
@@ -75,10 +75,10 @@ public class MedicalRecordService implements IMedicalRecordService {
     }
 
     @Override
-    public boolean updateMedicalRecord(MedicalRecord medicalRecord) {
+    public boolean updateMedicalRecord(MedicalRecord medicalRecord, String pathFile) {
         try {
             boolean existsMedicalRecod = false;
-            dataJsonContainer = dataJsonService.readFileJson(FILE_PATH);
+            dataJsonContainer = dataJsonService.readFileJson(pathFile);
             for (int i = 0; i < dataJsonContainer.getMedicalRecordList().size(); i++) {
                 MedicalRecord medicalRecordExisting = dataJsonContainer.getMedicalRecordList().get(i);
                 if (medicalRecordExisting.getLastName().equals(medicalRecord.getLastName())
@@ -103,9 +103,9 @@ public class MedicalRecordService implements IMedicalRecordService {
     }
 
     @Override
-    public boolean deleteMedicalRecord(MedicalRecord medicalRecord) {
+    public boolean deleteMedicalRecord(MedicalRecord medicalRecord, String pathFile) {
         try {
-            if (existsMedicalRecord(medicalRecord)) {
+            if (existsMedicalRecord(medicalRecord, pathFile)) {
                 dataJsonContainer.getMedicalRecordList().remove(medicalRecord);
                 dataJsonService.writeFileJson(dataJsonContainer, pathFile);
                 logger.info("Successful deleted medicalRecord ");

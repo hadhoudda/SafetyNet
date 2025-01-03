@@ -1,6 +1,7 @@
-package com.safetynet.api.controller;
+package com.safetynet.api.unitaire.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.safetynet.api.controller.ChildAlertByAddressController;
 import com.safetynet.api.dto.ChildAlertDto;
 import com.safetynet.api.model.Person;
 import com.safetynet.api.service.contracts.IPersonInfoService;
@@ -11,8 +12,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 

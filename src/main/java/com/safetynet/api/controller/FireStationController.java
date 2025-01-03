@@ -8,17 +8,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static com.safetynet.api.constants.Path.FILE_PATH;
+
 @RestController
 public class FireStationController {
 
     @Autowired
     IFireStationService fireStationService;
+    private String pathFile = FILE_PATH;
 
     //create fireStation
     @PostMapping("/firestation")
     public ResponseEntity<String> postFireStation(@RequestBody @Valid FireStation newFireStation){
         try {
-            if (fireStationService.addFireStation(newFireStation)){
+            if (fireStationService.addFireStation(newFireStation, pathFile)){
                 return ResponseEntity.status(HttpStatus.CREATED).body("FireStation added successfully");
             }else
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: FireStation exists");
@@ -32,7 +35,7 @@ public class FireStationController {
     @PatchMapping("/firestation")
     public ResponseEntity<String> putFireStation(@RequestBody @Valid FireStation newFireStation){
         try {
-            if (fireStationService.updateFireStation(newFireStation)){
+            if (fireStationService.updateFireStation(newFireStation, pathFile)){
                 return ResponseEntity.status(HttpStatus.CREATED).body("FireStation updated successfully");
             }else
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: fireStation is not exists");
@@ -46,7 +49,7 @@ public class FireStationController {
     @DeleteMapping("/firestation")
     public ResponseEntity<String> deleteFireStation(@RequestBody @Valid FireStation newFireStation){
         try {
-            if (fireStationService.deleteFireStation(newFireStation)){
+            if (fireStationService.deleteFireStation(newFireStation, pathFile)){
                 return ResponseEntity.status(HttpStatus.OK).body("FireStation deleted successfully");
             }else
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: fireStation is not exists");

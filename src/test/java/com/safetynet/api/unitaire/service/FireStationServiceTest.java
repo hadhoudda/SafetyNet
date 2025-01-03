@@ -1,7 +1,8 @@
-package com.safetynet.api.service;
+package com.safetynet.api.unitaire.service;
 
 import com.safetynet.api.container.DataJsonContainer;
 import com.safetynet.api.model.FireStation;
+import com.safetynet.api.service.FireStationService;
 import com.safetynet.api.service.contracts.IDataJsonService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,7 +34,7 @@ public class FireStationServiceTest {
         List<FireStation> fireStationList = List.of(fireStation);
         when(dataJsonService.readFileJson(pathFile)).thenReturn(dataJsonContainer);
         when(dataJsonContainer.getFireStationList()).thenReturn(fireStationList);
-        boolean result = fireStationService.existsFireStation(fireStation);
+        boolean result = fireStationService.existsFireStation(fireStation, pathFile);
         System.out.println(fireStationList);
         assertTrue(result);
     }
@@ -43,7 +44,7 @@ public class FireStationServiceTest {
         List<FireStation> fireStationList = new ArrayList<>();
         when(dataJsonService.readFileJson(pathFile)).thenReturn(dataJsonContainer);
         when(dataJsonContainer.getFireStationList()).thenReturn(fireStationList);
-        boolean result = fireStationService.addFireStation(fireStation);
+        boolean result = fireStationService.addFireStation(fireStation, pathFile);
         assertTrue(result);
         assertEquals(1, fireStationList.size());
         assertTrue(fireStationList.contains(fireStation));
@@ -55,7 +56,7 @@ public class FireStationServiceTest {
         lenient().when(dataJsonService.readFileJson(pathFile)).thenReturn(dataJsonContainer);
         when(dataJsonContainer.getFireStationList()).thenReturn(fireStationList);
         lenient().doNothing().when(dataJsonService).writeFileJson(dataJsonContainer, pathFile);
-        boolean result = fireStationService.updateFireStation(new FireStation("5 place renoir", "3"));
+        boolean result = fireStationService.updateFireStation(new FireStation("5 place renoir", "3"), pathFile);
         assertTrue(result);
         assertEquals(1, fireStationList.size());
     }
@@ -65,7 +66,7 @@ public class FireStationServiceTest {
         List<FireStation> fireStationList = new ArrayList<>(List.of(fireStation));
         when(dataJsonService.readFileJson(pathFile)).thenReturn(dataJsonContainer);
         when(dataJsonContainer.getFireStationList()).thenReturn(fireStationList);
-        boolean result = fireStationService.deleteFireStation(fireStation);
+        boolean result = fireStationService.deleteFireStation(fireStation, pathFile);
         assertTrue(result);
         assertEquals(0, fireStationList.size());
         assertFalse(fireStationList.contains(fireStation));

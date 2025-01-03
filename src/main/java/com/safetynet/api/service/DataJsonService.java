@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 
-import static com.safetynet.api.constants.Path.FILE_PATH;
-
 @Service
 public class DataJsonService implements IDataJsonService {
 

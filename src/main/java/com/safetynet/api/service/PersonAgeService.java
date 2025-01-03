@@ -1,6 +1,5 @@
 package com.safetynet.api.service;
 
-import com.safetynet.api.constants.Path;
 import com.safetynet.api.container.DataJsonContainer;
 import com.safetynet.api.model.MedicalRecord;
 import com.safetynet.api.model.Person;

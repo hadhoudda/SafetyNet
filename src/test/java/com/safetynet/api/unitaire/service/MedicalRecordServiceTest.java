@@ -1,8 +1,9 @@
-package com.safetynet.api.service;
+package com.safetynet.api.unitaire.service;
 
 import com.safetynet.api.container.DataJsonContainer;
 import com.safetynet.api.model.MedicalRecord;
 import com.safetynet.api.model.Person;
+import com.safetynet.api.service.MedicalRecordService;
 import com.safetynet.api.service.contracts.IDataJsonService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,20 +28,23 @@ public class MedicalRecordServiceTest {
     IDataJsonService dataJsonService;
     @Mock
     DataJsonContainer dataJsonContainer;
-    private final List<String> medications = Arrays.asList("ibupurin:200mg");
-    private final List<String> allergies = Arrays.asList("nillacilan");
-    private final MedicalRecord medicalRecord = new MedicalRecord("Nicola", "Leon", "12/06/1975", medications, allergies);
     private final Person person = new Person("Nicola", "Leon", "5 avenue Renoir", "Paris", "123", "235648", "leon@mail.com");
     private final String pathFile = FILE_PATH;
 
-
+    private MedicalRecord getMedicalRecord() {
+        List<String> medications = Arrays.asList("ibupurin:200mg");
+        List<String> allergies = Arrays.asList("nillacilan");
+        MedicalRecord medicalRecord = new MedicalRecord("Nicola", "Leon", "12/06/1975", medications, allergies);
+        return medicalRecord;
+    }
+    private final MedicalRecord medicalRecord = getMedicalRecord();
     @Test
     public void existsMedicalRecordTest() throws IOException {
         List<MedicalRecord> medicalRecordList = new ArrayList<>(List.of(medicalRecord));
         when(dataJsonService.readFileJson(pathFile)).thenReturn(dataJsonContainer);
         lenient().when(dataJsonContainer.getMedicalRecordList()).thenReturn(medicalRecordList);
         System.out.println(medicalRecordList);
-        medicalRecordService.existsMedicalRecord(medicalRecord);
+        medicalRecordService.existsMedicalRecord(medicalRecord, pathFile);
         assertEquals(medicalRecordList.getFirst(), medicalRecord);
     }
 
@@ -50,7 +54,7 @@ public class MedicalRecordServiceTest {
         when(dataJsonService.readFileJson(pathFile)).thenReturn(dataJsonContainer);
         lenient().when(dataJsonContainer.getPersonsList()).thenReturn(personList);
         System.out.println(personList);
-        medicalRecordService.existPersonByMedicalRecord(medicalRecord);
+        medicalRecordService.existPersonByMedicalRecord(medicalRecord, pathFile);
         assertEquals(personList.getFirst(), person);
     }
 
@@ -63,7 +67,7 @@ public class MedicalRecordServiceTest {
         when(dataJsonService.readFileJson(pathFile)).thenReturn(dataJsonContainer);
         when(dataJsonContainer.getMedicalRecordList()).thenReturn(medicalRecordList);
         doNothing().when(dataJsonService).writeFileJson(dataJsonContainer, pathFile);
-        boolean result = medicalRecordService.addMedicalRecord(medicalRecord);
+        boolean result = medicalRecordService.addMedicalRecord(medicalRecord, pathFile);
         assertTrue(result);
         assertEquals(1, medicalRecordList.size());
         assertTrue(medicalRecordList.contains(medicalRecord));
@@ -73,11 +77,12 @@ public class MedicalRecordServiceTest {
     public void updateMedicalRecordTest() throws IOException {
         List<MedicalRecord> medicalRecordList = new ArrayList<>(List.of(medicalRecord));
         List<String> medications = Arrays.asList("ibupurin:200mg", "hydrapermazol:400mg");
+        List<String> allergies = List.of("poulaine");
         MedicalRecord medicalRecordUpdate = new MedicalRecord("Nicola", "Leon", "12/06/1975", medications, allergies);
         when(dataJsonService.readFileJson(pathFile)).thenReturn(dataJsonContainer);
         when(dataJsonContainer.getMedicalRecordList()).thenReturn(medicalRecordList);
         doNothing().when(dataJsonService).writeFileJson(dataJsonContainer, pathFile);
-        boolean result = medicalRecordService.updateMedicalRecord(medicalRecordUpdate);
+        boolean result = medicalRecordService.updateMedicalRecord(medicalRecordUpdate, pathFile);
         assertTrue(result);
         assertEquals(1, medicalRecordList.size());
         assertTrue(medicalRecordList.contains(medicalRecordUpdate));
@@ -89,7 +94,7 @@ public class MedicalRecordServiceTest {
         when(dataJsonService.readFileJson(pathFile)).thenReturn(dataJsonContainer);
         when(dataJsonContainer.getMedicalRecordList()).thenReturn(medicalRecordList);
         doNothing().when(dataJsonService).writeFileJson(dataJsonContainer, pathFile);
-        boolean result = medicalRecordService.deleteMedicalRecord(medicalRecord);
+        boolean result = medicalRecordService.deleteMedicalRecord(medicalRecord, pathFile);
         assertTrue(result);
         assertEquals(0, medicalRecordList.size());
         assertFalse(medicalRecordList.contains(medicalRecord));

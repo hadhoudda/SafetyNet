@@ -9,8 +9,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 import static com.safetynet.api.constants.Path.FILE_PATH;
 
 @Service
@@ -24,25 +22,22 @@ public class PersonService implements IPersonService {
     private String pathFile = FILE_PATH;
 
     @Override
-    public boolean existPerson(Person person) {
+    public boolean existPerson(Person person, String pathFile) {
         try {
             dataJsonContainer = dataJsonService.readFileJson(pathFile);
-            List<String> listLastName = dataJsonContainer.getPersonsList().stream()
-                    .map(Person::getLastName).toList();
+            return dataJsonContainer.getPersonsList().stream()
+                    .anyMatch(p -> p.getFirstName().equals(person.getFirstName()) && p.getLastName().equals(person.getLastName()));
 
-            List<String> listFirstName = dataJsonContainer.getPersonsList().stream()
-                    .map(Person::getFirstName).toList();
-
-            return listFirstName.contains(person.getFirstName()) && listLastName.contains(person.getLastName());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            logger.error("Erreur reading fichier or verify person: {}", e.getMessage());
+            return false;
         }
     }
 
     @Override
-    public boolean addPerson(Person person) {
+    public boolean addPerson(Person person, String pathFile) {
         try {
-            boolean personExist = existPerson(person);
+            boolean personExist = existPerson(person, pathFile);
             if (personExist) {
                 logger.error("person exists");
                 return false;
@@ -59,7 +54,7 @@ public class PersonService implements IPersonService {
     }
 
     @Override
-    public boolean updatePerson(Person person) {
+    public boolean updatePerson(Person person, String pathFile) {
         try {
             boolean personExist = false;
             for (int i = 0; i < dataJsonContainer.getPersonsList().size(); i++) {
@@ -85,9 +80,9 @@ public class PersonService implements IPersonService {
     }
 
     @Override
-    public boolean deletePerson(Person person) {
+    public boolean deletePerson(Person person, String pathFile) {
         try {
-            if (existPerson(person)){
+            if (existPerson(person, pathFile)){
                 dataJsonContainer.getPersonsList().remove(person);
                 dataJsonService.writeFileJson(dataJsonContainer, pathFile);
                 logger.info("Successful deleted person ");

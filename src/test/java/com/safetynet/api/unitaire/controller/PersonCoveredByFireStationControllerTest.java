@@ -1,6 +1,7 @@
-package com.safetynet.api.controller;
+package com.safetynet.api.unitaire.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.safetynet.api.controller.PersonCoveredByFireStationController;
 import com.safetynet.api.dto.PersonListByFireStationWithCountDto;
 import com.safetynet.api.dto.PersonSimplifiedDto;
 import com.safetynet.api.service.contracts.IPersonInfoService;
@@ -18,7 +19,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
