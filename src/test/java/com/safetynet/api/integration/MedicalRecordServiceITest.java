@@ -31,6 +31,7 @@ public class MedicalRecordServiceITest {
 
     @Test
     public void existsPersonByMedicalRecordTest() {
+
         try {
             boolean result = medicalRecordService.existPersonByMedicalRecord(medicalRecord, pathFile);
             assertTrue(result);//test person exists

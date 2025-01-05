@@ -19,7 +19,7 @@ public class DataJsonServiceITest {
     DataJsonContainer dataJsonContainer;
     @Autowired
     ObjectMapper objectMapper;
-    private String pathFile = "src/test/resources/dataTest.json";
+    private String pathFile = "src/test/resources/file.json";
 
     @Test
     public void readFileJsonITest() {
