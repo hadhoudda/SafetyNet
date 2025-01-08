@@ -2,7 +2,7 @@ package com.safetynet.api.dto;
 
 import java.util.List;
 
-public class PersonInfos {
+public class PersonInfosDto {
     private String firstName;
     private String lastName;
     private String address;
@@ -11,10 +11,10 @@ public class PersonInfos {
     private List<String> medications;
     private List<String> allergies;
 
-    public PersonInfos() {
+    public PersonInfosDto() {
     }
 
-    public PersonInfos(String firstName, String lastName, String address, int age, String email, List<String> medications, List<String> allergies) {
+    public PersonInfosDto(String firstName, String lastName, String address, int age, String email, List<String> medications, List<String> allergies) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;

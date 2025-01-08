@@ -20,39 +20,49 @@ public class DataJsonService implements IDataJsonService {
         this.objectMapper = objectMapper;
     }
 
+    /**
+     * Method to read a json file
+     *
+     * @param path: file link to read
+     * @return object: DataJsonContainer
+     */
     @Override
     public DataJsonContainer readFileJson(String path) {
         File file = new File(path);
         DataJsonContainer data = null;
         try {
             data = objectMapper.readValue(file, DataJsonContainer.class);
-            logger.info("Fichier JSON lu avec succès");
+            logger.info("JSON file read successfully");
+            return data;
         } catch (IOException e) {
-            logger.error("Erreur lors de la lecture du fichier JSON : {}", e.getMessage());
+            logger.error("Error reading JSON file : {}", e.getMessage());
             e.printStackTrace();
         }
         return data;
     }
 
+    /**
+     * Method to write to a json file
+     * @param data:model
+     * @param path: file link to write
+     */
     @Override
     public void writeFileJson(DataJsonContainer data, String path) {
         File file = new File(path);
         try {
             if (file.exists()) {
                 objectMapper.writeValue(file, data);
-                logger.info("Objet écrit dans le fichier existant");
+                logger.info("Object written to existing file");
             } else {
                 if (file.createNewFile()) {
                     objectMapper.writeValue(file, data);
-                    logger.info("Fichier créé et objet écrit");
+                    logger.info("File created and object written");
                 } else {
-                    logger.error("Erreur : Impossible de créer le fichier");
+                    logger.error("Error: Unable to create file");
                 }
             }
         } catch (IOException e) {
-            logger.error("Erreur lors de l'écriture dans le fichier JSON : {}", e.getMessage());
-
+            logger.error("Error writing to JSON file : {}", e.getMessage());
         }
-
     }
 }

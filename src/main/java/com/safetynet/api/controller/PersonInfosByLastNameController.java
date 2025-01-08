@@ -1,6 +1,6 @@
 package com.safetynet.api.controller;
 
-import com.safetynet.api.dto.PersonInfos;
+import com.safetynet.api.dto.PersonInfosDto;
 import com.safetynet.api.service.contracts.IPersonInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,20 +11,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static com.safetynet.api.constants.Path.FILE_PATH;
+
 @RestController
 public class PersonInfosByLastNameController {
 
     @Autowired
     IPersonInfoService personInfoService;
+    String pathFile = FILE_PATH;
 
+    //6- Return information about a person
     @GetMapping(value = "/personInfolastName={lastName}")
-    public ResponseEntity<List<PersonInfos>> getPersonInfoByLastName(@PathVariable String lastName){
-        List<PersonInfos> personInfosList = personInfoService.findAllPersonInfos(lastName);
+    public ResponseEntity<List<PersonInfosDto>> getPersonInfoByLastName(@PathVariable String lastName){
+        List<PersonInfosDto> personInfosDtoList = personInfoService.findAllPersonInfos(lastName, pathFile);
 
-        if (!personInfosList.isEmpty()){
-            return new ResponseEntity<>(personInfosList, HttpStatus.OK);
+        if (!personInfosDtoList.isEmpty()){
+            return new ResponseEntity<>(personInfosDtoList, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(personInfosDtoList,HttpStatus.NOT_FOUND);
         }
     }
 }

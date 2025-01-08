@@ -1,4 +1,4 @@
-package com.safetynet.api.unitaire.controller;
+package com.safetynet.api.integration.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.api.controller.FireStationController;
@@ -21,24 +21,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-public class FireStationControllerTest {
+public class FireStationControllerITest {
 
     @Mock
     private IFireStationService fireStationService;
-
     @InjectMocks
     private FireStationController fireStationController;
-
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private ObjectMapper objectMapper;
-    private String pathFile = FILE_PATH;
-    private FireStation fireStation = new FireStation("5 place marche", "5");
+    private final String pathFile = FILE_PATH;
+    private final FireStation fireStation = new FireStation("5 place marche", "5");
 
     @BeforeEach
-    private void setUp() {
+    public void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(fireStationController).build();
         objectMapper = new ObjectMapper();
     }
@@ -72,6 +69,33 @@ public class FireStationControllerTest {
     }
 
     @Test
+    public void postFireStationTest_Failed() throws Exception {
+        // Arrange
+        when(fireStationService.addFireStation(fireStation, pathFile)).thenThrow(new RuntimeException("Error adding firestation")); //Simulate the exception
+        // Act & Assert
+        mockMvc.perform(post("/firestation")
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(fireStation)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Failed to add fireStation"));
+        // Verify
+        verify(fireStationService, times(1)).addFireStation(fireStation, pathFile);
+    }
+
+    // Test for validation of missing fields example here address
+    @Test
+    public void postFireStationTest_MissingAddress() throws Exception {
+        // Arrange
+        FireStation fireStationWithoutAddress = new FireStation("", "5");
+        // Act & Assert
+        mockMvc.perform(post("/firestation")
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(fireStationWithoutAddress)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Error: Address code is required "));
+    }
+
+    @Test
     public void putFireStationTest_Success() throws Exception {
         //Arrange
         when(fireStationService.updateFireStation(fireStation, pathFile)).thenReturn(true);
@@ -100,6 +124,20 @@ public class FireStationControllerTest {
     }
 
     @Test
+    public void putFireStationTest_Failed() throws Exception {
+        // Arrange
+        when(fireStationService.updateFireStation(fireStation, pathFile)).thenThrow(new RuntimeException("Error updating firestation")); //Simulate the exception
+        // Act & Assert
+        mockMvc.perform(patch("/firestation")
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(fireStation)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Failed to update fireStation"));
+        // Verify
+        verify(fireStationService, times(1)).updateFireStation(fireStation, pathFile);
+    }
+
+    @Test
     public void deleteFireStationTest_Success() throws Exception {
         //Arrange
         when(fireStationService.deleteFireStation(fireStation, pathFile)).thenReturn(true);
@@ -123,6 +161,20 @@ public class FireStationControllerTest {
                         .content(objectMapper.writeValueAsString(fireStation)))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Error: fireStation is not exists"));
+        // Verify
+        verify(fireStationService, times(1)).deleteFireStation(fireStation, pathFile);
+    }
+
+    @Test
+    public void deleteFireStationTest_Failed() throws Exception {
+        // Arrange
+        when(fireStationService.deleteFireStation(fireStation, pathFile)).thenThrow(new RuntimeException("Error deleting firestation")); //Simulate the exception
+        // Act & Assert
+        mockMvc.perform(delete("/firestation")
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(fireStation)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Failed to delete fireStation"));
         // Verify
         verify(fireStationService, times(1)).deleteFireStation(fireStation, pathFile);
     }

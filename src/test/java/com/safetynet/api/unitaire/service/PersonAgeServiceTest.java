@@ -18,20 +18,20 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static com.safetynet.api.constants.Path.FILE_PATH;
-import static java.time.LocalDate.parse;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class PersonAgeServiceTest {
+
     @InjectMocks
     PersonAgeService personAgeService;
     @Mock
     DataJsonContainer dataJsonContainer;
     @Mock
     DataJsonService dataJsonService;
-
+    private final String pathFile = FILE_PATH;
     private List<Person> getPerson() {
         Person person1 = new Person("Alice", "Jean", "5 av lyon", "Paris", "123", "235648", "alice@mail.com");
         Person person2 = new Person("Sarah", "Krys", "12 place Monplier", "Nice", "457", "543896", "sarah@mail.com");
@@ -49,41 +49,45 @@ public class PersonAgeServiceTest {
     }
 
     @Test
-    public void calculAgePersonTest() {
+    public void calculateAgePersonTest() {
         // Arrange
         String birthDayPerson = "02/10/1983";
         LocalDate currentDate = LocalDate.now();
-        // Date de naissance convertie
+        // converted date of birth
         LocalDate birthDate = LocalDate.parse(birthDayPerson, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
         Period age = Period.between(birthDate, currentDate);
         // Act
-        int result = personAgeService.calculAgePerson(birthDayPerson);
+        int result = personAgeService.calculateAgePerson(birthDayPerson, pathFile);
         // Assert
         assertEquals(age.getYears(), result);
         assertEquals(result, 41);
     }
 
-
     @Test
-    public void calculAdulPersonTest() throws IOException {
+    public void calculateAdultPersonTest() throws IOException {
+        // Arrange
         List<Person> personList = getPerson();
         List<MedicalRecord> medicalRecordList = getMedicalRecord();
         when(dataJsonService.readFileJson(FILE_PATH)).thenReturn(dataJsonContainer);
         lenient().when(dataJsonContainer.getPersonsList()).thenReturn(personList);
         lenient().when(dataJsonContainer.getMedicalRecordList()).thenReturn(medicalRecordList);
-        int result = personAgeService.calculAdulPerson(personList);
-        assertEquals(result, 1);
+        // Act
+        int result = personAgeService.calculateAdultPerson(personList, pathFile);
+        // Assert
+        assertEquals(result, 1); // verify number of adults is 1
     }
 
     @Test
-    public void calculChildPersonTest() throws IOException {
+    public void calculateChildPersonTest() throws IOException {
+        // Arrange
         List<Person> personList = getPerson();
         List<MedicalRecord> medicalRecordList = getMedicalRecord();
         when(dataJsonService.readFileJson(FILE_PATH)).thenReturn(dataJsonContainer);
         lenient().when(dataJsonContainer.getPersonsList()).thenReturn(personList);
         lenient().when(dataJsonContainer.getMedicalRecordList()).thenReturn(medicalRecordList);
-        int result = personAgeService.calculChildPerson(personList);
-        assertEquals(result, 1);
+        // Act
+        int result = personAgeService.calculateChildPerson(personList, pathFile);
+        // Assert
+        assertEquals(result, 1); // verify number of children is 1
     }
-
 }

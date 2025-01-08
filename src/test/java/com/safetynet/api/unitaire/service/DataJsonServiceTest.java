@@ -14,23 +14,24 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class DataJsonServiceTest {
+
     @InjectMocks
     private DataJsonService dataJsonService;
     @Mock
     DataJsonContainer data;
     @Mock
     private ObjectMapper objectMapper;
-    private String pathFile = "src/test/resources/dataTest.json";
     @Mock
     private File file;
 
     @Test
     public void readFileJsonTest() throws IOException {
         // Arrange
+        String pathFile = "src/test/resources/dataTest.json";
         File file = new File(pathFile);
         when(objectMapper.readValue(file, DataJsonContainer.class)).thenReturn(data);
         // Act
@@ -39,5 +40,4 @@ public class DataJsonServiceTest {
         assertNotNull(result);
         assertEquals(data, result);
     }
-
 }

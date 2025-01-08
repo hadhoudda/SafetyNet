@@ -1,7 +1,6 @@
 package com.safetynet.api.controller;
 
-
-import com.safetynet.api.dto.PersonAndMedicalRecordDto;
+import com.safetynet.api.dto.PersonAndMedicalByAddressDto;
 import com.safetynet.api.service.contracts.IPersonInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,21 +11,24 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
 
+import static com.safetynet.api.constants.Path.FILE_PATH;
+
 @RestController
 public class PersonGroupedByAddressController {
 
     @Autowired
     IPersonInfoService personInfoService ;
+    String pathFile = FILE_PATH;
 
+    //5- Return a list of all persons served by the station and group people by address
     @GetMapping(value = "/flood/stations")
-    public ResponseEntity<Map<String, List<PersonAndMedicalRecordDto>>> getAllPersonGroupedByAddress(String stations){
-        Map<String, List<PersonAndMedicalRecordDto>> listPersons = personInfoService.findAllPersonGroupedByAddress(stations);
+    public ResponseEntity<Map<String, List<PersonAndMedicalByAddressDto>>> getAllPersonGroupedByAddress(String stations){
+        Map<String, List<PersonAndMedicalByAddressDto>> listPersons = personInfoService.findAllPersonGroupedByAddress(stations, pathFile);
 
         if (!listPersons.isEmpty()){
             return new ResponseEntity<>(listPersons, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(listPersons, HttpStatus.NOT_FOUND);
         }
     }
-
 }

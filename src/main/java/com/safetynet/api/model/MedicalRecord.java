@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class MedicalRecord {
+
     @JsonProperty("firstName")
     @NotBlank(message = "FirstName code is required")
     private String firstName;
@@ -87,7 +88,7 @@ public class MedicalRecord {
                 '}';
     }
 
-    //redefini eqauls pour l suppression d'un objet si nécessaire
+    //Redefine equals for deleting an object if necessary
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -104,5 +105,4 @@ public class MedicalRecord {
     public int hashCode() {
         return Objects.hash(firstName, lastName, birthdate, medications, allergies);
     }
-
 }

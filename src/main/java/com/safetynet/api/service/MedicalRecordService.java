@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.safetynet.api.constants.Path.FILE_PATH;
-
 @Service
 public class MedicalRecordService implements IMedicalRecordService {
 
@@ -21,23 +19,33 @@ public class MedicalRecordService implements IMedicalRecordService {
     @Autowired
     IDataJsonService dataJsonService;
     DataJsonContainer dataJsonContainer;
-    private final String pathFile = FILE_PATH;
 
+    /**
+     * Method to check the existence of person by medicalRecord
+     *
+     * @param medicalRecord: object
+     * @param pathFile:      file link
+     * @return true: medicalRecord exists or false: medicalRecord is not exists
+     */
     public boolean existPersonByMedicalRecord(MedicalRecord medicalRecord, String pathFile) {
         try {
             dataJsonContainer = dataJsonService.readFileJson(pathFile);
             List<String> listLastName = dataJsonContainer.getPersonsList().stream()
                     .map(Person::getLastName).toList();
-
             List<String> listFirstName = dataJsonContainer.getPersonsList().stream()
                     .map(Person::getFirstName).toList();
-
             return listFirstName.contains(medicalRecord.getFirstName()) && listLastName.contains(medicalRecord.getLastName());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * Method to check the existence of medicalRecord
+     * @param medicalRecord: object
+     * @param pathFile: file link
+     * @return true: medicalRecord exists or false: medicalRecord is not exists
+     */
     public boolean existsMedicalRecord(MedicalRecord medicalRecord, String pathFile) {
         try {
             dataJsonContainer = dataJsonService.readFileJson(pathFile);
@@ -51,11 +59,17 @@ public class MedicalRecordService implements IMedicalRecordService {
         }
     }
 
+    /**
+     * Methode to add medicalRecord
+     * @param medicalRecord: object
+     * @param pathFile: file link
+     * @return true: medicalRecord adding or false: didn't add 
+     */
     @Override
     public boolean addMedicalRecord(MedicalRecord medicalRecord, String pathFile) {
         try {
             if (existPersonByMedicalRecord(medicalRecord, pathFile)) { //verify person exists
-                if (existsMedicalRecord(medicalRecord, pathFile)) {
+                if (existsMedicalRecord(medicalRecord, pathFile)) { //verify medicalRecord exists
                     logger.error(" medicalRecord exists ");
                     return false;
                 } else {
@@ -74,6 +88,12 @@ public class MedicalRecordService implements IMedicalRecordService {
         }
     }
 
+    /**
+     * Methode to update medicalRecord
+     * @param medicalRecord: object
+     * @param pathFile: file link
+     * @return true: medicalRecord updating or false: didn't update
+     */
     @Override
     public boolean updateMedicalRecord(MedicalRecord medicalRecord, String pathFile) {
         try {
@@ -83,7 +103,7 @@ public class MedicalRecordService implements IMedicalRecordService {
                 MedicalRecord medicalRecordExisting = dataJsonContainer.getMedicalRecordList().get(i);
                 if (medicalRecordExisting.getLastName().equals(medicalRecord.getLastName())
                         && medicalRecordExisting.getFirstName().equals(medicalRecord.getFirstName())) {
-                    dataJsonContainer.getMedicalRecordList().set(i, medicalRecord);//mettre à jour medicalRecord
+                    dataJsonContainer.getMedicalRecordList().set(i, medicalRecord);//update medicalRecord
                     existsMedicalRecod = true;
                     break;
                 }
@@ -102,10 +122,16 @@ public class MedicalRecordService implements IMedicalRecordService {
         }
     }
 
+    /**
+     * Methode to delete medicalRecord
+     * @param medicalRecord: object
+     * @param pathFile: file link
+     * @return true: medicalRecord deleting or false: didn't delete
+     */
     @Override
     public boolean deleteMedicalRecord(MedicalRecord medicalRecord, String pathFile) {
         try {
-            if (existsMedicalRecord(medicalRecord, pathFile)) {
+            if (existsMedicalRecord(medicalRecord, pathFile)) { //verify medicalRecord exists
                 dataJsonContainer.getMedicalRecordList().remove(medicalRecord);
                 dataJsonService.writeFileJson(dataJsonContainer, pathFile);
                 logger.info("Successful deleted medicalRecord ");

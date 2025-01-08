@@ -1,9 +1,6 @@
 package com.safetynet.api.service.contracts;
 
-import com.safetynet.api.dto.ChildAlertDto;
-import com.safetynet.api.dto.PersonAndMedicalRecordDto;
-import com.safetynet.api.dto.PersonInfos;
-import com.safetynet.api.dto.PersonListByFireStationWithCountDto;
+import com.safetynet.api.dto.*;
 import com.safetynet.api.model.Person;
 
 import java.io.IOException;
@@ -12,13 +9,19 @@ import java.util.Map;
 
 public interface IPersonInfoService {
 
-    List<Person> filtrePersonByFirestation(String firestation);
-    PersonListByFireStationWithCountDto findAllPersonListByFireStationWithCount(String stationNumber) throws IOException;
-    List<String> findAllListMailPersonByCity(String city);
-    List<String> findAllListPhonePersonByFireStation(String firestation);
-    Map<List<ChildAlertDto>, List<Person>> findAllChildByAdress(String adress);
-    List<PersonAndMedicalRecordDto> findAllPersonAndMedicalByAdress(String adress);
-    Map<String, List<PersonAndMedicalRecordDto>> findAllPersonGroupedByAddress(String station);
-    List<PersonInfos> findAllPersonInfos(String lastName);
+    List<Person> filterPersonByFirestation(String firestation, String pathFile);
 
+    PersonListByFireStationWithCountDto findAllPersonListByFireStationWithCount(String stationNumber, String pathFile) throws IOException;
+
+    List<String> findAllListPhonePersonByFireStation(String firestation, String pathFile);
+
+    Map<List<ChildAlertDto>, List<Person>> findAllChildByAddressAndPersonFromEvenHouse(String address, String pathFile);
+
+    Map<String, List<PersonAndMedicalByAddressDto>> findAllPersonAndMedicalByAddress(String address, String pathFile);
+
+    Map<String, List<PersonAndMedicalByAddressDto>> findAllPersonGroupedByAddress(String station, String pathFile);
+
+    List<PersonInfosDto> findAllPersonInfos(String lastName, String pathFile);
+
+    List<String> findAllListMailPersonByCity(String city);
 }

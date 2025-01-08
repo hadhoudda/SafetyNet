@@ -10,22 +10,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static com.safetynet.api.constants.Path.FILE_PATH;
+
 @RestController
 public class PhoneAlertByFireStationController {
 
     @Autowired
     IPersonInfoService personInfoService ;
+    String pathFile = FILE_PATH;
 
-    // 3- retourner une liste des numeros de telephone des persons couvertes par la caserne de pompiers correspondante
+    //3- Return a list of telephone numbers of persons covered by the corresponding firestation
     @GetMapping(value = "/phoneAlert")
     public ResponseEntity<List<String>> getListPhonePersonByFireStation(@RequestParam String firestation) {
-
-        List<String> listPhone = personInfoService.findAllListPhonePersonByFireStation(firestation);
+        List<String> listPhone = personInfoService.findAllListPhonePersonByFireStation(firestation, pathFile);
 
         if (!listPhone.isEmpty()) {
             return new ResponseEntity<>(listPhone, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(listPhone, HttpStatus.NOT_FOUND);
         }
     }
 }

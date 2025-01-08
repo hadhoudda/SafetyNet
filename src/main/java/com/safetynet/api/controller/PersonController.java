@@ -6,21 +6,28 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import static com.safetynet.api.constants.Path.FILE_PATH;
 
 @RestController
 public class PersonController {
-
     @Autowired
     IPersonService personService;
-
     String pathFile = FILE_PATH;
 
     // Create person
     @PostMapping("/person")
-    public ResponseEntity<String> postPerson(@RequestBody @Valid Person newPerson) {
+    public ResponseEntity<String> postPerson(@RequestBody @Valid Person newPerson, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) { //Checking validation errors in data submitted to the model person
+            StringBuilder errorMessage = new StringBuilder("Error: ");
+            for (ObjectError error : bindingResult.getAllErrors()) {
+                errorMessage.append(error.getDefaultMessage()).append(" ");
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage.toString());
+        }
         try {
             if (personService.addPerson(newPerson, pathFile)){
                 return ResponseEntity.status(HttpStatus.CREATED).body("Person added successfully");
@@ -30,7 +37,7 @@ public class PersonController {
         }
     }
 
-    // update person
+    // Update person
     @PatchMapping("/person")
     public ResponseEntity<String> putPerson(@RequestBody @Valid Person person) {
         try {

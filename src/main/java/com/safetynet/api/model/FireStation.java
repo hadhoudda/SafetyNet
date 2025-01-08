@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import java.util.Objects;
 
 public class FireStation {
+
     @JsonProperty("address")
     @NotBlank(message = "Address code is required")
     private String address;
@@ -46,7 +47,7 @@ public class FireStation {
                 '}';
     }
 
-    //redefini equls pour l suppression d'un objet si nécessaire
+    //Redefine equals for deleting an object if necessary
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

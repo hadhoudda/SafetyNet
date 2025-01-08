@@ -1,4 +1,4 @@
-package com.safetynet.api.integration;
+package com.safetynet.api.integration.service;
 
 import com.safetynet.api.container.DataJsonContainer;
 import com.safetynet.api.model.Person;

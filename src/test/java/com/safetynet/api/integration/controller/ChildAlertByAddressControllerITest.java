@@ -1,4 +1,4 @@
-package com.safetynet.api.unitaire.controller;
+package com.safetynet.api.integration.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.api.controller.ChildAlertByAddressController;
@@ -20,23 +20,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.safetynet.api.constants.Path.FILE_PATH;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-public class ChildAlertByAddressControllerTest {
+public class ChildAlertByAddressControllerITest {
 
     @InjectMocks
     private ChildAlertByAddressController childAlertByAddressController;
     @Autowired
     private MockMvc mockMvc;
-
     @Mock
     private IPersonInfoService personInfoService;
-
     private ObjectMapper objectMapper;
+    String pathFile = FILE_PATH;
 
     @BeforeEach
     public void setUp() {
@@ -61,26 +61,26 @@ public class ChildAlertByAddressControllerTest {
         // Arrange
         String address = "123 Main St";
         Map<List<ChildAlertDto>, List<Person>> result = getListPersonChildren();
-        when(personInfoService.findAllChildByAdress(address)).thenReturn(result);
+        when(personInfoService.findAllChildByAddressAndPersonFromEvenHouse(address, pathFile)).thenReturn(result);
         // Act & Assert
         mockMvc.perform(get("/childAlert")
                         .param("address", address))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(result)));
         // Verify
-        verify(personInfoService, times(1)).findAllChildByAdress(address);
+        verify(personInfoService, times(1)).findAllChildByAddressAndPersonFromEvenHouse(address, pathFile);
     }
 
     @Test
     public void getListChildTest_NotFound() throws Exception {
         // Arrange
         String address = "Unknown Address";
-        when(personInfoService.findAllChildByAdress(address)).thenReturn(new HashMap<>());
+        when(personInfoService.findAllChildByAddressAndPersonFromEvenHouse(address, pathFile)).thenReturn(new HashMap<>());
         // Act & Assert
         mockMvc.perform(get("/childAlert")
                         .param("address", address))
                 .andExpect(status().isNotFound());
         // Verify
-        verify(personInfoService, times(1)).findAllChildByAdress(address);
+        verify(personInfoService, times(1)).findAllChildByAddressAndPersonFromEvenHouse(address, pathFile);
     }
 }

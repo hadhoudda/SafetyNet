@@ -1,35 +1,19 @@
 package com.safetynet.api.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
-public class PersonAndMedicalRecordDto {
+public class PersonAndMedicalByAddressDto {
     private String firstName;
     private String lastName;
     private String phone;
-    private String city;
     private int age;
     private List<String> medications;
     private List<String> allergies;
 
-    public PersonAndMedicalRecordDto() {
-    }
-
-    public PersonAndMedicalRecordDto(String firstName, String lastName, String phone, int age, List<String> medications, List<String> allergies) {
+    public PersonAndMedicalByAddressDto(String firstName, String lastName, String phone, int age, List<String> medications, List<String> allergies) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
-        this.age = age;
-        this.medications = medications;
-        this.allergies = allergies;
-    }
-
-    public PersonAndMedicalRecordDto(String firstName, String lastName, String phone, String city, int age, List<String> medications, List<String> allergies) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phone = phone;
-        this.city = city;
         this.age = age;
         this.medications = medications;
         this.allergies = allergies;
@@ -59,14 +43,6 @@ public class PersonAndMedicalRecordDto {
         this.phone = phone;
     }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
     public int getAge() {
         return age;
     }
@@ -89,17 +65,5 @@ public class PersonAndMedicalRecordDto {
 
     public void setAllergies(List<String> allergies) {
         this.allergies = allergies;
-    }
-
-    @Override
-    public String toString() {
-        return "PersonAndMedicalRecordDto{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", phone='" + phone + '\'' +
-                ", age=" + age +
-                ", medications=" + medications +
-                ", allergies=" + allergies +
-                '}';
     }
 }

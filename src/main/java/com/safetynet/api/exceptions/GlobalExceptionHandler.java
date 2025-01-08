@@ -1,4 +1,4 @@
-package exceptions;
+package com.safetynet.api.exceptions;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

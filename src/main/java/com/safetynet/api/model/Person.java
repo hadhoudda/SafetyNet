@@ -2,7 +2,6 @@ package com.safetynet.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
-import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
@@ -118,7 +117,7 @@ public class Person {
                 '}';
     }
 
-    //redefini equls pour l suppression d'un objet si nécessaire
+    //Redefine equals for deleting an object if necessary
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -137,5 +136,4 @@ public class Person {
     public int hashCode() {
         return Objects.hash(firstName, lastName, address, city, zip, phone, email);
     }
-
 }

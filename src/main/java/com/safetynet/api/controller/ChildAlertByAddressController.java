@@ -13,22 +13,25 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
 
+import static com.safetynet.api.constants.Path.FILE_PATH;
+
 @RestController
 public class ChildAlertByAddressController {
 
     @Autowired
     IPersonInfoService personInfoService ;
+    String pathFile = FILE_PATH;
 
-    //2 -retourner une liste d'enfants et une liste des autres membres du foyer
+    //2- Return a list of children and a list of other household members
     @GetMapping(value = "/childAlert")
     public ResponseEntity<Map<List<ChildAlertDto>, List<Person>>> getListChild(@RequestParam String address) {
-        Map<List<ChildAlertDto>, List<Person>> listMap = personInfoService.findAllChildByAdress(address);
+        Map<List<ChildAlertDto>, List<Person>> listMap = personInfoService.findAllChildByAddressAndPersonFromEvenHouse(address, pathFile);
 
         if(!listMap.isEmpty()){
             return new ResponseEntity<>(listMap, HttpStatus.OK);
         }
         else {
-            return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
 }

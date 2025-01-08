@@ -1,9 +1,8 @@
-package com.safetynet.api.unitaire.controller;
+package com.safetynet.api.integration.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.api.controller.CommunityEmailController;
 import com.safetynet.api.service.contracts.IPersonInfoService;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,7 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -22,17 +22,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-public class CommunityEmailControllerTest {
+public class CommunityEmailControllerITest {
 
     @Autowired
     MockMvc mockMvc;
-
     @Mock
     private IPersonInfoService personInfoService;
-
     @InjectMocks
     CommunityEmailController communityEmailController;
-
     private ObjectMapper objectMapper;
 
     @BeforeEach
@@ -41,16 +38,11 @@ public class CommunityEmailControllerTest {
         objectMapper = new ObjectMapper();
     }
 
-
-    @AfterEach
-    private void tearDown() {
-    }
-
     @Test
     public void getListMailPersonByCityTest_Success() throws Exception {
         // Arrange
         String city = "Nice";
-        List<String> listEmail = Arrays.asList("maxime@mail.com");
+        List<String> listEmail = List.of("maxime@mail.com");
         when(personInfoService.findAllListMailPersonByCity(city)).thenReturn(listEmail);
         // Act & Assert
         mockMvc.perform(get("/communityEmail")

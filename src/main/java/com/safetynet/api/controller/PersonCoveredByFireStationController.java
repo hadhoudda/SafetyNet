@@ -11,22 +11,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
+import static com.safetynet.api.constants.Path.FILE_PATH;
+
 @RestController
 public class PersonCoveredByFireStationController {
 
     @Autowired
     IPersonInfoService iPersonInfoService;
+    String pathFile = FILE_PATH;
 
-    // 1- retourner une liste des personnes couvertes par la caserne de pompiers correspondante
+    //1- Return a list of people covered by the corresponding firestation and must provide a counting the number of adults and the number of children
     @GetMapping(value = "/firestation")
     public ResponseEntity<PersonListByFireStationWithCountDto> getPersonListByFireStationWithCount(@RequestParam String stationNumber) throws IOException {
-        PersonListByFireStationWithCountDto personList = iPersonInfoService.findAllPersonListByFireStationWithCount(stationNumber);
+        PersonListByFireStationWithCountDto personList = iPersonInfoService.findAllPersonListByFireStationWithCount(stationNumber, pathFile);
 
         if (personList != null) {
             return new ResponseEntity<>(personList, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-
     }
 }

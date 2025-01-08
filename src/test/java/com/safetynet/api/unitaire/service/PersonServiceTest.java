@@ -18,9 +18,9 @@ import static com.safetynet.api.constants.Path.FILE_PATH;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-
 @ExtendWith(MockitoExtension.class)
 public class PersonServiceTest {
+
     @InjectMocks
     private PersonService personService;
     @Mock
@@ -37,7 +37,6 @@ public class PersonServiceTest {
         List<Person> personList = List.of(person);
         when(dataJsonService.readFileJson(pathFile)).thenReturn(dataJsonContainer);
         when(dataJsonContainer.getPersonsList()).thenReturn(personList);
-        System.out.println(personList);
         //Act
         boolean result = personService.existPerson(person, pathFile);
         //Assert
@@ -52,7 +51,6 @@ public class PersonServiceTest {
         doNothing().when(dataJsonService).writeFileJson(dataJsonContainer, pathFile);
         // Act
         boolean result = personService.addPerson(person, pathFile);
-        System.out.println(personList);
         // Assert
         assertTrue(result);
         assertEquals(1, personList.size());
@@ -65,7 +63,6 @@ public class PersonServiceTest {
         List<Person> personList = new ArrayList<>(List.of(person));
         lenient().when((dataJsonService.readFileJson(FILE_PATH))).thenReturn(dataJsonContainer);
         when(dataJsonContainer.getPersonsList()).thenReturn(personList);
-        //when(personService.existPerson(person, pathFile)).thenReturn(true);
         doNothing().when(dataJsonService).writeFileJson(dataJsonContainer, pathFile);
         // Act
         boolean result = personService.updatePerson(new Person("Alice", "Jean", "26 place europe", "Nice", "123", "235648", "alice@mail.com"), pathFile);
@@ -88,5 +85,4 @@ public class PersonServiceTest {
         //Verify
         verify(dataJsonService, times(1)).writeFileJson(dataJsonContainer, pathFile);
     }
-
 }

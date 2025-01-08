@@ -6,12 +6,12 @@ import com.safetynet.api.model.MedicalRecord;
 import com.safetynet.api.model.Person;
 import org.springframework.stereotype.Component;
 
-
 import java.util.List;
 import java.util.Objects;
 
 @Component
 public class DataJsonContainer {
+
     @JsonProperty("persons")
     private List<Person> personsList;
     @JsonProperty("firestations")
@@ -25,7 +25,7 @@ public class DataJsonContainer {
         this.medicalRecordList = medicalRecordList;
     }
 
-    public DataJsonContainer(){    }
+    public DataJsonContainer(){}
 
     public List<Person> getPersonsList() {
         return personsList;
@@ -53,8 +53,6 @@ public class DataJsonContainer {
 
     private String data;
 
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -67,5 +65,4 @@ public class DataJsonContainer {
     public int hashCode() {
         return Objects.hash(data);
     }
-
 }

@@ -9,36 +9,44 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.safetynet.api.constants.Path.FILE_PATH;
-
 @Service
 public class PersonService implements IPersonService {
 
     private static final Logger logger = LogManager.getLogger(PersonService.class);
-
     @Autowired
     IDataJsonService dataJsonService;
     DataJsonContainer dataJsonContainer;
-    private String pathFile = FILE_PATH;
 
+    /**
+     * Method to check the existence of person
+     *
+     * @param person:   object
+     * @param pathFile: file link
+     * @return true: person exists or false: person is not exists
+     */
     @Override
     public boolean existPerson(Person person, String pathFile) {
         try {
             dataJsonContainer = dataJsonService.readFileJson(pathFile);
             return dataJsonContainer.getPersonsList().stream()
                     .anyMatch(p -> p.getFirstName().equals(person.getFirstName()) && p.getLastName().equals(person.getLastName()));
-
         } catch (Exception e) {
-            logger.error("Erreur reading fichier or verify person: {}", e.getMessage());
+            logger.error("Error reading file or verify person: {}", e.getMessage());
             return false;
         }
     }
 
+    /**
+     * Methode to add person
+     *
+     * @param person:   object
+     * @param pathFile: file link
+     * @return true: person adding or false: didn't add
+     */
     @Override
     public boolean addPerson(Person person, String pathFile) {
         try {
-            boolean personExist = existPerson(person, pathFile);
-            if (personExist) {
+            if (existPerson(person, pathFile)) { //verify person exists
                 logger.error("person exists");
                 return false;
             } else {
@@ -53,6 +61,12 @@ public class PersonService implements IPersonService {
         }
     }
 
+    /**
+     * Methode to update person
+     * @param person: object
+     * @param pathFile: file link
+     * @return true: person updating or false: didn't update
+     */
     @Override
     public boolean updatePerson(Person person, String pathFile) {
         try {
@@ -60,7 +74,7 @@ public class PersonService implements IPersonService {
             for (int i = 0; i < dataJsonContainer.getPersonsList().size(); i++) {
                 Person existingPerson = dataJsonContainer.getPersonsList().get(i);
                 if (existingPerson.getLastName().equals(person.getLastName()) && existingPerson.getFirstName().equals(person.getFirstName())) {
-                    dataJsonContainer.getPersonsList().set(i, person); //mettre à jour person
+                    dataJsonContainer.getPersonsList().set(i, person); //update person
                     personExist = true;
                     break;
                 }
@@ -79,10 +93,16 @@ public class PersonService implements IPersonService {
         }
     }
 
+    /**
+     * Methode to delete person
+     * @param person: object
+     * @param pathFile: file link
+     * @return true: person deleting or false: didn't delete
+     */
     @Override
     public boolean deletePerson(Person person, String pathFile) {
         try {
-            if (existPerson(person, pathFile)){
+            if (existPerson(person, pathFile)) { //verify person exists
                 dataJsonContainer.getPersonsList().remove(person);
                 dataJsonService.writeFileJson(dataJsonContainer, pathFile);
                 logger.info("Successful deleted person ");

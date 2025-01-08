@@ -16,7 +16,7 @@ public class CommunityEmailController {
     @Autowired
     IPersonInfoService iPersonInfoService;
 
-    //7- retourner les adresses mail de tous les habitants de la ville
+    //7- Return the email of all residents of the city
     @GetMapping(value = "/communityEmail")
     public ResponseEntity<List<String>>  getListMailPersonByCity(@RequestParam String city) {
         List<String> listEmail = iPersonInfoService.findAllListMailPersonByCity(city);
@@ -24,8 +24,7 @@ public class CommunityEmailController {
         if(!listEmail.isEmpty()){
             return  new ResponseEntity<>(listEmail, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(listEmail,HttpStatus.NOT_FOUND);
         }
     }
-
 }
