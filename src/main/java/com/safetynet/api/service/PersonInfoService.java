@@ -187,7 +187,7 @@ public class PersonInfoService implements IPersonInfoService {
      * @return: map of persons
      */
     @Override
-    public Map<String, List<PersonAndMedicalByAddressDto>> findAllPersonGroupedByAddress(String station, String pathFile) {
+    public Map<String, List<PersonAndMedicalByAddressDto>> findAllPersonGroupedByAddress(List<String> station, String pathFile) {
         try {
             dataJsonContainer = dataJsonService.readFileJson(pathFile);
             List<Person> personList = dataJsonContainer.getPersonsList();
@@ -195,7 +195,7 @@ public class PersonInfoService implements IPersonInfoService {
             List<FireStation> fireStationList = dataJsonContainer.getFireStationList();
             Map<String, List<PersonAndMedicalByAddressDto>> medicalRecordsMap = new HashMap<>();
             // Filter addresses according to the indicated station
-            List<String> addressesList = fireStationList.stream().filter(firestation -> station.equals(firestation.getStation())).map(FireStation::getAddress).toList();
+            List<String> addressesList = fireStationList.stream().filter(firestation -> station.contains(firestation.getStation())).map(FireStation::getAddress).toList();
             // Filter person based on addresses
             List<Person> filteredPersons = personList.stream().filter(person -> addressesList.contains(person.getAddress())).toList();
             // Browse filtered person

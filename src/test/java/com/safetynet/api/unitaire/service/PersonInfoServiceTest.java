@@ -18,10 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -153,12 +150,13 @@ public class PersonInfoServiceTest {
         List<Person> persons = getPerson();
         List<MedicalRecord> medicalRecordList = getMedicalRecord();
         List<FireStation> fireStationList = getFireStation();
+        List<String> station = new ArrayList<>(List.of("1"));
         when(dataJsonService.readFileJson(anyString())).thenReturn(dataJsonContainer);
         when(dataJsonContainer.getPersonsList()).thenReturn(persons);
         when(dataJsonContainer.getMedicalRecordList()).thenReturn(medicalRecordList);
         when(dataJsonContainer.getFireStationList()).thenReturn(fireStationList);
         // Act
-        Map<String, List<PersonAndMedicalByAddressDto>> result = personInfoService.findAllPersonGroupedByAddress("1", anyString()); //1: number of stations
+        Map<String, List<PersonAndMedicalByAddressDto>> result = personInfoService.findAllPersonGroupedByAddress(station, anyString()); //1: number of stations
         // Assert
         assertNotNull(result);
         Set<String> addressList = result.keySet();

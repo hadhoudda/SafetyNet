@@ -1,6 +1,9 @@
 package com.safetynet.api.dto;
 
+import org.springframework.stereotype.Component;
+
 import java.util.List;
+
 
 public class PersonAndMedicalByAddressDto {
     private String firstName;

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -21,11 +22,11 @@ public class PersonGroupedByAddressController {
     String pathFile = FILE_PATH;
 
     //5- Return a list of all persons served by the station and group people by address
-    @GetMapping(value = "/flood/stations")
-    public ResponseEntity<Map<String, List<PersonAndMedicalByAddressDto>>> getAllPersonGroupedByAddress(String stations){
+    @GetMapping(value = "/flood/stations") //http://localhost:8080/flood/stations?stations=1&stations=2
+    public ResponseEntity<Map<String, List<PersonAndMedicalByAddressDto>>> getAllPersonGroupedByAddress(@RequestParam List<String> stations) {
         Map<String, List<PersonAndMedicalByAddressDto>> listPersons = personInfoService.findAllPersonGroupedByAddress(stations, pathFile);
 
-        if (!listPersons.isEmpty()){
+        if (!listPersons.isEmpty()) {
             return new ResponseEntity<>(listPersons, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(listPersons, HttpStatus.NOT_FOUND);

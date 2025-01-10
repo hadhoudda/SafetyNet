@@ -55,14 +55,15 @@ public class PersonGroupedByAddressControllerITest {
     @Test
     public void getAllPersonGroupedByAddressTest_Success() throws Exception {
         //Arrange
-        String station = "1";
+        List<String> station = new ArrayList<>(List.of("1","2"));
         String address = "3 place renoir";
         List<PersonAndMedicalByAddressDto> personList = getPersonAndMedicalRecordDto();
         Map<String, List<PersonAndMedicalByAddressDto>> result = new HashMap<>(Map.of(address, personList));
         when(personInfoService.findAllPersonGroupedByAddress(station, pathFile)).thenReturn(result);
         // Act & Assert
         mockMvc.perform(get("/flood/stations")
-                        .param("stations", station))
+                        .param("stations", "1")
+                        .param("stations", "2"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(result)));
         // Verify
@@ -72,12 +73,12 @@ public class PersonGroupedByAddressControllerITest {
     @Test
     public void getAllPersonGroupedByAddressTest_NotFound() throws Exception {
         //Arrange
-        String station = "Unknown station";
+        List<String> station = new ArrayList<>(List.of("Unknown station"));
         Map<String, List<PersonAndMedicalByAddressDto>> result = new HashMap<>();
         when(personInfoService.findAllPersonGroupedByAddress(station, pathFile)).thenReturn(result);
         // Act & Assert
         mockMvc.perform(get("/flood/stations")
-                        .param("stations", station))
+                        .param("stations", "Unknown station"))
                 .andExpect(status().isNotFound());
         // Verify
         verify(personInfoService, times(1)).findAllPersonGroupedByAddress(station, pathFile);

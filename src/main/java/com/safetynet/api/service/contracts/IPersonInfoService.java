@@ -19,7 +19,7 @@ public interface IPersonInfoService {
 
     Map<String, List<PersonAndMedicalByAddressDto>> findAllPersonAndMedicalByAddress(String address, String pathFile);
 
-    Map<String, List<PersonAndMedicalByAddressDto>> findAllPersonGroupedByAddress(String station, String pathFile);
+    Map<String, List<PersonAndMedicalByAddressDto>> findAllPersonGroupedByAddress(List<String> station, String pathFile);
 
     List<PersonInfosDto> findAllPersonInfos(String lastName, String pathFile);
 
